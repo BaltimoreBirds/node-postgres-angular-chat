@@ -8,7 +8,7 @@
   <body ng-controller="mainController">
     <div class="container">
       <ul ng-repeat="message in messageData">
-        <li>{{ message.text }}&nbsp;Delete:<input type="checkbox" ng-click="deleteMessage(message.id)"></li>
+        <li>{{ message.text }}&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id)">Delete</li>
       </ul>
 
       <form>
