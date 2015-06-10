@@ -15,7 +15,7 @@ angular.module('nodeChat',[])
 			console.log('Error '+error);
 		});
 
-	// Create a new todo
+	// Create a new message
 	$scope.createMessage = function(messageID) {
 		$http.post('/api/v1/messages', $scope.formData)
 		    .success(function(data) {
@@ -28,7 +28,7 @@ angular.module('nodeChat',[])
 		    });
     };
 
-	// Delete a todo
+	// Delete a message
 	$scope.deleteMessage = function(messageID) {
 		$http.delete('/api/v1/messages/' + messageID)
 		    .success(function(data) {
