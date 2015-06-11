@@ -61,8 +61,9 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
+  console.log('deserializeUser called');
   User.findById(id, function(err, user) {
-    done(err, user);
+    done(err, {firstname: 'Bob', lastname: 'Hardy'});
   });
 });
 

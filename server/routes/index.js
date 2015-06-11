@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
+var passport = require('passport');
 var path = require('path');
 var connectionString = require(path.join(__dirname, '../', '../', 'config'));
 
@@ -98,5 +99,11 @@ var createQuery = function (client, error, done, callback){
 
 // 		res.redirect('/users/' + req.user.username);
 // 	});
+
+router.post('/login', 
+	passport.authenticate('local', { successRedirect: '/',
+									 failureRedirect: '/login',
+									 failureFlash: true })
+	);
 
 module.exports = router;
