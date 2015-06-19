@@ -89,16 +89,16 @@ var createQuery = function (client, error, done, callback){
 	}
 }
 
-// router.post('/login', 
-// 	passport.authenticate('local'),
-// 	function(req, res){
+router.post('/login', 
+	passport.authenticate('local'),
+	function(req, res){
 
-// 		//If this function gets called, authentication was successful. 
+		//If this function gets called, authentication was successful. 
 
-// 		//'req.user' contains the authenticated user.
+		//'req.user' contains the authenticated user.
 
-// 		res.redirect('/users/' + req.user.username);
-// 	});
+		res.redirect('/users/' + req.user.username);
+	});
 
 router.post('/login', 
 	passport.authenticate('local', { successRedirect: '/',
