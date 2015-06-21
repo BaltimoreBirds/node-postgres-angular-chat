@@ -34,6 +34,13 @@ var User = Bookshelf.Model.extend({
   hasTimestamps: true,
 });
 
+var Message = Bookshelf.Model.extend({
+  tableName: 'messages',
+
+  hasTimestamps: true,
+
+  
+});
 
 //Name model
 var Name = Bookshelf.Model.extend({

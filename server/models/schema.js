@@ -4,6 +4,11 @@ var Schema = {
     provider: {type: 'string', maxlength: 150, nullable: false},
     displayName: {type: 'string', maxlength: 150, nullable: false},
   },
+  messages: {
+    id: {type: 'increments', nullable: false, primary: true},
+    user_id: {type: 'integer',nullable: false, unsigned: true},
+    text: {type: 'string', maxlegnth: 300, nullable: false}
+  },
   //users have a name profile
   name: {
     id: {type: 'increments', nullable: false, primary: true},
