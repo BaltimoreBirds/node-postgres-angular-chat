@@ -29,6 +29,18 @@ var Schema = {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer', nullable: false, unsigned: true},
     value: {type: 'string', maxlength:150, nullable: true},
+  },
+  //Has and belongs to many users, has many messages
+  chats:{
+    id: {type: 'increments', nullable: false, primary: true},
+    user_id: {type: 'integer', nullable: false, unsigned: true},
+    message_id: {type: 'integer', nullable: false, unsigned: true} 
+  },
+  //Join table for chats and users many to many 
+  users_chats: {
+    id: {type: 'increments', nullable: false, primary: true},
+    user_id: {type: 'integer', nullable: false, unsigned: true},
+    chat_id: {type: 'integer', nullable: false, unsigned: true}
   }
 };
 module.exports = Schema;

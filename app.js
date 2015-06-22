@@ -34,12 +34,16 @@ var User = Bookshelf.Model.extend({
   hasTimestamps: true,
 });
 
+//Message model
 var Message = Bookshelf.Model.extend({
   tableName: 'messages',
 
   hasTimestamps: true,
 
-  
+  user: function(){
+    return this.belongsTo(User, 'id');
+  }
+
 });
 
 //Name model
@@ -70,6 +74,9 @@ var Photo = Bookshelf.Model.extend({
     return this.belongsTo(User, 'id');
   }
 });
+
+
+
 
 passport.use(new LocalStrategy(
   //done is the callback dumby
