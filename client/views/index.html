@@ -59,18 +59,22 @@
         </form>
       </div>
 
-      <div id="login_form">
-        <form action="/login" method="post">
+      <div id="signup_form">
+        <form>
             <div>
                 <label>Username:</label>
-                <input class="form-control input-lg" type="text" name="username"/>
+                <input class="form-control input-lg" type="text" name="username" ng-model="userData.displayName"/>
             </div>
             <div>
                 <label>Password:</label>
-                <input class="form-control input-lg" type="password" name="password"/>
+                <input class="form-control input-lg" type="password" name="password" ng-model="userData.password"/>
             </div>
             <div>
-                &nbsp;</br><input class="btn btn-primary btn-lg" type="submit" value="Log In"/>
+                <label>Provider</label>
+                <input class="form-control input-lg" type="provider" name="provider" ng-model="userData.provider"/>
+            </div>
+            <div>
+                &nbsp;</br><input class="btn btn-primary btn-lg" type="submit" value="Sign Up" ng-click="createUser()"/>
             </div>
         </form>
       </div>

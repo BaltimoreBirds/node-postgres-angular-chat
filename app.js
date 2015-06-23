@@ -9,73 +9,8 @@ var passport = require('passport');
 var migrate = require('migrate');
 var LocalStrategy = require('passport-local').Strategy;
 
-var routes = require('./server/routes/index');
+var routes = require('./server/api/index');
 var users = require('./server/routes/users');
-
-
-var knex = require('knex')({
-    client: 'pg',
-    connection: {
-        host     : '127.0.0.1',
-        user     : 'mswanson',
-        // password : 'your_database_password',
-        database : 'chat',
-        charset  : 'utf8'
-  }
-});
-var Bookshelf = require('bookshelf')(knex);
-
-//Only uses Bookshelf in data structures
-
-// User model
-var User = Bookshelf.Model.extend({
-  tableName: 'users',
-
-  hasTimestamps: true,
-});
-
-//Message model
-var Message = Bookshelf.Model.extend({
-  tableName: 'messages',
-
-  hasTimestamps: true,
-
-  user: function(){
-    return this.belongsTo(User, 'id');
-  }
-
-});
-
-//Name model
-var Name = Bookshelf.Model.extend({
-  
-  tableName: 'names',
-  
-  user: function() {
-    return this.belongsTo(User, 'id');
-  },
-
-});
-
-//Email Model
-var Email = Bookshelf.Model.extend({
-  tableName: 'emails',
-
-  user: function(){
-    return this.belongsTo(User, 'id');
-  }
-});
-
-//Photo Model
-var Photo = Bookshelf.Model.extend({
-  tableName: 'photo',
-
-  user: function(){
-    return this.belongsTo(User, 'id');
-  }
-});
-
-
 
 
 passport.use(new LocalStrategy(

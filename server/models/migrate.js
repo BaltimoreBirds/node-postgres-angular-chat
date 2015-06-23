@@ -30,27 +30,27 @@ function createTable(tableName) {
       else {
         column = table[Schema[tableName][key].type](key);
       }
-      // if (Schema[tableName][key].hasOwnProperty('nullable') && Schema[tableName][key].nullable === true) {
-      //   column.nullable();
-      // }
-      // else {
-      //   column.notNullable();
-      // }
-      // if (Schema[tableName][key].hasOwnProperty('primary') && Schema[tableName][key].primary === true) {
-      //   column.primary();
-      // }
-      // if (Schema[tableName][key].hasOwnProperty('unique') && Schema[tableName][key].unique) {
-      //   column.unique();
-      // }
-      // if (Schema[tableName][key].hasOwnProperty('unsigned') && Schema[tableName][key].unsigned) {
-      //   column.unsigned();
-      // }
-      // if (Schema[tableName][key].hasOwnProperty('references')) {
-      //   column.references(Schema[tableName][key].references);
-      // }
-      // if (Schema[tableName][key].hasOwnProperty('defaultTo')) {
-      //   column.defaultTo(Schema[tableName][key].defaultTo);
-      // }
+      if (Schema[tableName][key].hasOwnProperty('nullable') && Schema[tableName][key].nullable === true) {
+        column.nullable();
+      }
+      else {
+        column.notNullable();
+      }
+      if (Schema[tableName][key].hasOwnProperty('primary') && Schema[tableName][key].primary === true) {
+        column.primary();
+      }
+      if (Schema[tableName][key].hasOwnProperty('unique') && Schema[tableName][key].unique) {
+        column.unique();
+      }
+      if (Schema[tableName][key].hasOwnProperty('unsigned') && Schema[tableName][key].unsigned) {
+        column.unsigned();
+      }
+      if (Schema[tableName][key].hasOwnProperty('references')) {
+        column.references(Schema[tableName][key].references);
+      }
+      if (Schema[tableName][key].hasOwnProperty('defaultTo')) {
+        column.defaultTo(Schema[tableName][key].defaultTo);
+      }
     });
   });
 }

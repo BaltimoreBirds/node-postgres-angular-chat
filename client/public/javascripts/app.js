@@ -4,9 +4,10 @@ angular.module('nodeChat',[])
 
 	$scope.formData= {};
 	$scope.messageData = {};
+	$scope.userData = {};
 
 	//Get all todos with AJAX request to /api/v1/messages
-	$http.get('/api/v1/messages')
+	$http.get('messages')
 		.success(function(data){
 			$scope.messageData = data; 
 			console.log(data);
@@ -17,7 +18,7 @@ angular.module('nodeChat',[])
 
 	// Create a new message
 	$scope.createMessage = function(messageID) {
-		$http.post('/api/v1/messages', $scope.formData)
+		$http.post('messages', $scope.formData)
 		    .success(function(data) {
 		        $scope.formData = {};
 		        $scope.messageData = data;
@@ -30,7 +31,7 @@ angular.module('nodeChat',[])
 
 	// Delete a message
 	$scope.deleteMessage = function(messageID) {
-		$http.delete('/api/v1/messages/' + messageID)
+		$http.delete('messages/' + messageID)
 		    .success(function(data) {
 		        $scope.messageData = data;
 		        console.log(data);
@@ -39,5 +40,19 @@ angular.module('nodeChat',[])
 		        console.log('Error: ' + data);
 		    });
 	};
+
+	//Create a user
+	$scope.createUser = function(userID) {
+		console.log($scope.userData);
+		$http.post('users', $scope.userData)
+		.success(function(data){
+			$scope.userData	= data;
+			console.log(data);
+		})
+		.error(function(error){
+			//!!!!!!!!!!!HOLY SHIT PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
+			console.log('User Creation Error: ', error);
+		});
+	}
 
 });
