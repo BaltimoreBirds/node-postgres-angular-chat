@@ -14,7 +14,7 @@ var Schema = {
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false}
   },
   //users have a name profile
-  name: {
+  names: {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer', nullable: false, unsigned: true},
     familyName:{ type: 'string', maxlength:150, nullable: false}, //last
