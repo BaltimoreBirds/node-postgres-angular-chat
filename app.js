@@ -1,14 +1,15 @@
-var express       = require('express');
-var path          = require('path');
-var favicon       = require('serve-favicon');
-var logger        = require('morgan');
-var cookieParser  = require('cookie-parser');
-var bodyParser    = require('body-parser');
-var session       = require('express-session');
-var passport      = require('passport');
-var migrate       = require('migrate');
-var flash         = require('connect-flash');
-var LocalStrategy = require('passport-local').Strategy;
+var express          = require('express');
+var path             = require('path');
+var favicon          = require('serve-favicon');
+var logger           = require('morgan');
+var cookieParser     = require('cookie-parser');
+var bodyParser       = require('body-parser');
+var session          = require('express-session');
+var passport         = require('passport');
+var migrate          = require('migrate');
+var flash            = require('connect-flash');
+var LocalStrategy    = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 var routes = require('./server/api/index');
 var users = require('./server/routes/users');
@@ -62,6 +63,18 @@ passport.use(new LocalStrategy(
 
   }));
 
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "http://www.example.com/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate(..., function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);

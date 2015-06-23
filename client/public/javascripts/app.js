@@ -66,5 +66,15 @@ angular.module('nodeChat',[])
 			console.log('Authentication Error: ', error);
 		});
 	}
+	// $scope.fBAuthenticate = function(userID) {
+	// 	$http.post('http://www.facebook.com/dialog/oauth?1001237643242798&localhost:3000/')
+	// 	.success(function(data){
+	// 		$scope.userData = data;
+	// 		console.log(data);
+	// 	})
+	// 	.error(function(error){
+	// 		console.log('Facebook Authentication Error: ', error);
+	// 	});
+	// }
 
 });
