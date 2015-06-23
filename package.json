@@ -18,6 +18,7 @@
     "bookshelf": "^0.8.1",
     "when": "^3.7.3",
     "lodash": "^3.9.3",
-    "migrate": "^0.2.1"
+    "migrate": "^0.2.1",
+    "passport-facebook": "^2.0.0"
   }
 }

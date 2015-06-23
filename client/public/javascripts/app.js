@@ -50,7 +50,7 @@ angular.module('nodeChat',[])
 			console.log(data);
 		})
 		.error(function(error){
-			//!!!!!!!!!!!HOLY SHIT PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
+			//!!!!!!!!!!!HOLY SHIP PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
 			console.log('User Creation Error: ', error);
 		});
 	}

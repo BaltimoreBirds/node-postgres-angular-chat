@@ -2,6 +2,7 @@ var Schema = {
   users: {
     id: {type: 'increments', nullable: false, primary: true},
     provider: {type: 'string', maxlength: 150, nullable: false},
+    password: {type: 'string', maxlength: 25, nullable: false},
     displayName: {type: 'string', maxlength: 150, nullable: false},
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false},

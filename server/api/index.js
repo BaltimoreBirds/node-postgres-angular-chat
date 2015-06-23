@@ -41,7 +41,8 @@ router.route('/users')
     console.log(req.body.provider);
 		User.forge({
 			provider: req.body.provider,
-			displayName: req.body.displayName
+			displayName: req.body.displayName,
+      password: req.body.password
 		})
 		.save()
 		.then(function(user){
