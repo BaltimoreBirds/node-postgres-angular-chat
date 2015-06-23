@@ -8,6 +8,8 @@ var router = express.Router();
 // body-parser middleware for handling request variables
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json()); 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 
 //Models and Collections
@@ -105,6 +107,13 @@ router.route('/users/:id')
     });
   });
 
+// User login
+router.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/',
+                                   failureFlash: true })
+);
+
 router.route('/messages')
 	//fetch all messages
 	.get(function(req, res){
@@ -112,7 +121,7 @@ router.route('/messages')
 		Messages.forge()
 		.fetch()
 		.then(function(collection){
-      console.log('collection: '+ collection);
+      // console.log('collection: '+ collection);
 			res.json({error: false, data: collection.toJSON()});
 		})
 		.catch(function(err){
@@ -170,6 +179,7 @@ router.route('/messages/:id')
 
   // delete a message
   .delete(function (req, res) {
+    console.log(req.params);
     Message.forge({id: req.params.id})
     .fetch({require: true})
     .then(function (message) {
@@ -185,5 +195,6 @@ router.route('/messages/:id')
       res.status(500).json({error: true, data: {message: err.message}});
     });
   });
+
 
 module.exports = router;

@@ -13,7 +13,7 @@ angular.module('nodeChat',[])
 			console.log(data);
 		})
 		.error(function(error){
-			console.log('Error '+error);
+			console.log('Error ', error);
 		});
 
 	// Create a new message
@@ -25,7 +25,7 @@ angular.module('nodeChat',[])
 		        console.log(data);
 		    })
 		    .error(function(error) {
-		        console.log('Error: ' + error);
+		        console.log('Error: ', error);
 		    });
     };
 
@@ -37,7 +37,7 @@ angular.module('nodeChat',[])
 		        console.log(data);
 		    })
 		    .error(function(data) {
-		        console.log('Error: ' + data);
+		        console.log('Error: ',  data);
 		    });
 	};
 
@@ -52,6 +52,18 @@ angular.module('nodeChat',[])
 		.error(function(error){
 			//!!!!!!!!!!!HOLY SHIT PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
 			console.log('User Creation Error: ', error);
+		});
+	}
+
+	//Login User
+	$scope.authenticateUser = function(userID) {
+		$http.post('login', $scope.userData)
+		.success(function(data){
+			$scope.userData = data;
+			console.log(data);
+		})
+		.error(function(error){
+			console.log('Authentication Error: ', error);
 		});
 	}
 

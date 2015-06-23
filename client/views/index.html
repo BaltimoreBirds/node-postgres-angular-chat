@@ -37,7 +37,7 @@
   </head>
   <body ng-controller="mainController">
     <div class="container">
-
+      
       <div class="header">
         <h1>ExpressChat</h1>
         <hr>
@@ -60,6 +60,7 @@
       </div>
 
       <div id="signup_form">
+        <p>SIGN UP</p>
         <form>
             <div>
                 <label>Username:</label>
@@ -78,7 +79,20 @@
             </div>
         </form>
       </div>
-
+      <form>
+        <p><br/>Login</p>
+        <div>
+            <label>Username:</label>
+            <input class="form-control input-lg" type="text" name="username" ng-model="userData.username"/>
+        </div>
+        <div>
+            <label>Password:</label>
+            <input class="form-control input-lg" type="password" name="password" np-model="userData.password"/>
+        </div>
+        <div>
+            &nbsp;</br><input class="btn btn-primary btn-lg" type="submit" value="Log In" ng-click="authenticateUser()"/>
+        </div>
+    </form>
     </div>
     <script src="http://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
