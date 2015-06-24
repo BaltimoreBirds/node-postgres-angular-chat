@@ -19,6 +19,8 @@
     "when": "^3.7.3",
     "lodash": "^3.9.3",
     "migrate": "^0.2.1",
-    "passport-facebook": "^2.0.0"
+    "passport-facebook": "^2.0.0",
+    "cors": "^2.7.1",
+    "bluebird": "^2.9.30"
   }
 }

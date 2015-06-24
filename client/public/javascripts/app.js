@@ -43,7 +43,7 @@ angular.module('nodeChat',[])
 
 	//Create a user
 	$scope.createUser = function(userID) {
-		console.log($scope.userData);
+		// console.log($scope.userData);
 		$http.post('users', $scope.userData)
 		.success(function(data){
 			$scope.userData	= data;
@@ -61,13 +61,14 @@ angular.module('nodeChat',[])
 		.success(function(data){
 			$scope.userData = data;
 			console.log(data);
+			console.log('success');
 		})
 		.error(function(error){
 			console.log('Authentication Error: ', error);
 		});
 	}
 	// $scope.fBAuthenticate = function(userID) {
-	// 	$http.post('http://www.facebook.com/dialog/oauth?1001237643242798&localhost:3000/')
+	// 	$http.get('auth/facebook')
 	// 	.success(function(data){
 	// 		$scope.userData = data;
 	// 		console.log(data);

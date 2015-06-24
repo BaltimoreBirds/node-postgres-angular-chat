@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
+var cors = require('cors');
 // application routing
 var router = express.Router();
 // body-parser middleware for handling request variables
@@ -11,6 +12,9 @@ app.use(bodyParser.json());
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var corsOptions = {
+  origin: 'http://localhost:3000'
+};
 
 //Models and Collections
 var Message = require('../models/message');
@@ -22,6 +26,7 @@ router.route('/')
   .get(function(req, res){
     res.sendFile(path.join(__dirname,'../','../','client', 'views','index.html'));
   })
+
 
 router.route('/users')
 	//fetch all users
@@ -42,7 +47,9 @@ router.route('/users')
 		User.forge({
 			provider: req.body.provider,
 			displayName: req.body.displayName,
-      password: req.body.password
+      password: req.body.password,
+      status: 'active',
+      last_login: new Date(),
 		})
 		.save()
 		.then(function(user){
@@ -114,6 +121,22 @@ router.post('/login',
                                    failureRedirect: '/',
                                    failureFlash: true })
 );
+
+// // Redirect the user to Facebook for authentication.  When complete,
+// // Facebook will redirect the user back to the application at
+// //     /auth/facebook/callback
+// router.get('/auth/facebook', cors(corsOptions), passport.authenticate('facebook'));
+  
+
+// // Facebook will redirect the user to this URL after approval.  Finish the
+// // authentication process by attempting to obtain an access token.  If
+// // access was granted, the user will be logged in.  Otherwise,
+// // authentication has failed.
+// router.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', { successRedirect: '/',
+//                                       failureRedirect: '/fail',
+//                                       failureFlash: true })
+//   );
 
 router.route('/messages')
 	//fetch all messages

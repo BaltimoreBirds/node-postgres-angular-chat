@@ -10,6 +10,8 @@ var migrate          = require('migrate');
 var flash            = require('connect-flash');
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var cors             = require('cors');
+var Promise          = require('bluebird')
 
 var routes = require('./server/api/index');
 var users = require('./server/routes/users');
@@ -31,6 +33,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
  }));
+app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
@@ -41,20 +44,27 @@ app.use('/', routes);
 app.use('/users', users);
 
 
+//use Flash messages
+app.use(function(req, res, next){
+    res.locals.success_messages = req.flash('success_messages');
+    res.locals.error_messages = req.flash('error_messages');
+    next();
+});
+
 passport.use(new LocalStrategy(
   //done is the callback dumby
 
   function(username, password, done){
     console.log('LocalStrategy!');
-    User.findOne({displayName: username}, function(err, user){
+    User.fetch({displayName: username}, function(err, user){
       if(err){ return done(err);}
 
       if(!user){
         return done(null, false, {message: 'Incorrect username.'});
       }
 
-      if(!user.validPassword(password)){
-
+      if(!user.check()){
+        console.log('checked!');
         return done(null, false, {message: 'Incorrect password.'});
       }
 
@@ -63,18 +73,20 @@ passport.use(new LocalStrategy(
 
   }));
 
-passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://www.example.com/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate(..., function(err, user) {
-      if (err) { return done(err); }
-      done(null, user);
-    });
-  }
-));
+// var fBSecret = require('./key');
+// passport.use(new FacebookStrategy({
+//     clientID: 1001248296575066,
+//     clientSecret: fBSecret,
+//     callbackURL: "http://localhost:3000/auth/facebook/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     console.log(profile)
+//     // User.forge({id:, function(err, user) {
+//     //   if (err) { return done(err); }
+//     //   done(null, user);
+//     // });
+//   }
+// ));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -87,12 +99,14 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//use Flash messages
-app.use(function(req, res, next){
-    res.locals.success_messages = req.flash('success_messages');
-    res.locals.error_messages = req.flash('error_messages');
-    next();
-});
+
+// //Allow Cross Origin Requests
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+//   next();
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
