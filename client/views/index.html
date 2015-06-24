@@ -87,7 +87,7 @@
         <form>
             <div>
                 <label>Username:</label>
-                <input class="form-control input-lg" type="text" name="username" ng-model="userData.displayName"/>
+                <input class="form-control input-lg" type="text" name="username" ng-model="userData.username"/>
             </div>
             <div>
                 <label>Password:</label>
@@ -102,20 +102,20 @@
             </div>
         </form>
       </div>
-      <form>
-        <p><br/>Login</p>
-        <div>
-            <label>Username:</label>
-            <input class="form-control input-lg" type="text" name="username" ng-model="userData.username"/>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input class="form-control input-lg" type="password" name="password" np-model="userData.password"/>
-        </div>
-        <div>
-            &nbsp;</br><input class="btn btn-primary btn-lg" type="submit" value="Log In" ng-click="authenticateUser()"/>
-        </div>
-    </form>
+      <form action="/login" method="post">
+          <p>Log in</p>
+          <div>
+              <label>Username:</label>
+              <input class="form-control input-lg" type="text" name="username"/>
+          </div>
+          <div>
+              <label>Password:</label>
+              <input class="form-control input-lg" type="password" name="password"/>
+          </div>
+          <div>
+              <br/><input class="btn btn-primary btn-lg" type="submit" value="Log In"/>
+          </div>
+      </form>
     <br/>
     <!-- <input class="btn btn-primary btn-lg" type="submit" value="FB Log in" ng-click="fBAuthenticate()"/> -->
     </div>

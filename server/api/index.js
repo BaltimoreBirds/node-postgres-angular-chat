@@ -46,7 +46,7 @@ router.route('/users')
     console.log(req.body.provider);
 		User.forge({
 			provider: req.body.provider,
-			displayName: req.body.displayName,
+			username: req.body.username,
       password: req.body.password,
       status: 'active',
       last_login: new Date(),

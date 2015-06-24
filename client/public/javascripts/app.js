@@ -5,6 +5,7 @@ angular.module('nodeChat',[])
 	$scope.formData= {};
 	$scope.messageData = {};
 	$scope.userData = {};
+	$scope.loginData = {};
 
 	//Get all todos with AJAX request to /api/v1/messages
 	$http.get('messages')
@@ -56,17 +57,17 @@ angular.module('nodeChat',[])
 	}
 
 	//Login User
-	$scope.authenticateUser = function(userID) {
-		$http.post('login', $scope.userData)
-		.success(function(data){
-			$scope.userData = data;
-			console.log(data);
-			console.log('success');
-		})
-		.error(function(error){
-			console.log('Authentication Error: ', error);
-		});
-	}
+	// $scope.authenticateUser = function(userID) {
+	// 	$http.post('login', $scope.loginData)
+	// 	.success(function(data){
+	// 		$scope.loginData = data;
+	// 		console.log(data);
+	// 		console.log('post success');
+	// 	})
+	// 	.error(function(error){
+	// 		console.log('Authentication Error: ', error);
+	// 	});
+	// }
 	// $scope.fBAuthenticate = function(userID) {
 	// 	$http.get('auth/facebook')
 	// 	.success(function(data){
