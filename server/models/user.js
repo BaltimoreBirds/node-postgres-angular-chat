@@ -16,12 +16,14 @@ var User = Bookshelf.Model.extend({
 
 User.getByUsername = function(username, callback){
     Users.forge().fetch({username:username})
-        .then( function callback(users){
+        //The promises then method takes two arguments(onFulfilled,onRejected )
+        .then( function(users){
             console.log('Then function');
-            return users;
+            console.log(users.toJSON());
+            callback(users.toJSON());
         } )
         .catch(function(err){
-            console.log('error');
+            console.log('catch error');
             callback(err);
         });
     

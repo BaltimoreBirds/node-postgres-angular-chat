@@ -58,6 +58,7 @@ passport.use(new LocalStrategy(
     // var user = new User();
     User.getByUsername({ username: username }, function(err, user) {
       console.log('We made it this far!');
+      console.log('User: '+user);
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
