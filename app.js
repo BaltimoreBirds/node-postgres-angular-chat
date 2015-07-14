@@ -42,31 +42,39 @@ app.use('/users', users);
 
 
 passport.serializeUser(function(user, done) {
+  console.log('serializeUser called');
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
   console.log('deserializeUser called');
   User.fetch(id, function(err, user) {
-    done(err, {firstname: 'Bob', lastname: 'Hardy'});
+    done(err, {firstname: 'JJ', lastname: 'Hardy'});
   });
 });
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log('Fetching User');
+    console.log(username);
     // var user = new User();
-    User.getByUsername({ username: username }, function(err, user) {
+    User.getByUsername( {username: username}, function(err, user) {
       console.log('We made it this far!');
-      console.log('User: '+user);
+      console.log('User: ', user);
+      console.log('Error: ', err);
       if (err) { return done(err); }
       if (!user) {
+        console.log('Doesn\'t exist');
         return done(null, false, { message: 'Incorrect username.' });
       }
-      // if (!user.check()) {
-      //   return done(null, false, { message: 'Incorrect password.' });
-      // }
-      return done(null, user);
+      //check Password
+      if ( !user.validPassword( {password: password} )) {
+        console.log('checking password');
+        return done(null, false, { message: 'Incorrect password.' });
+      }else{
+        console.log('Cry bitch');
+      }
+      return done(null, user._byID);
     });
   }
 ));

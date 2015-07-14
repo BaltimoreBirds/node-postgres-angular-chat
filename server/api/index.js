@@ -138,6 +138,16 @@ router.post('/login',
 //                                       failureFlash: true })
 //   );
 
+
+//logout 
+router.get('/logout', function(req, res){
+  req.session.destroy()
+  req.logout();
+  console.log('logged out...redirecting');
+  res.redirect('/');
+});
+
+
 router.route('/messages')
 	//fetch all messages
 	.get(function(req, res){

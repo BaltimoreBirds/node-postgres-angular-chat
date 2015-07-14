@@ -56,6 +56,16 @@ angular.module('nodeChat',[])
 		});
 	}
 
+	// $scope.logOut = function(){
+	// 	$http.get('logout')
+	// 	.success(function(){
+	// 		alert('logged out!');
+	// 	})
+	// 	.error(function(error){
+	// 		console.log('Error logging out:', error);
+	// 	});
+	// }
+
 	//Login User
 	// $scope.authenticateUser = function(userID) {
 	// 	$http.post('login', $scope.loginData)

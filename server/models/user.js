@@ -8,30 +8,36 @@ var User = Bookshelf.Model.extend({
     tableName: 'users',
 
     hasTimestamps: true,
-
-
     
-
+}, {
+    getByUsername: function(username, callback){
+        Users.forge().fetch({username: username})
+            .then( function(user){
+                // console.log(username);
+                console.log('Then function');
+                console.log(user.toJSON());
+                callback(null, user);
+            } )
+            .catch(function(err){
+                console.log('catch error');
+                callback(err);
+            });
+        
+    }
 });
 
-User.getByUsername = function(username, callback){
-    Users.forge().fetch({username:username})
-        //The promises then method takes two arguments(onFulfilled,onRejected )
-        .then( function(users){
-            console.log('Then function');
-            console.log(users.toJSON());
-            callback(users.toJSON());
-        } )
-        .catch(function(err){
-            console.log('catch error');
-            callback(err);
-        });
-    
-}
 
 var Users = Bookshelf.Collection.extend({
 
-  model: User
+    model: User, 
+
+    validPassword: function(password){
+        if(this.password != password){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
 });
 
