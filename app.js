@@ -72,7 +72,7 @@ passport.use(new LocalStrategy(
         console.log('checking password');
         return done(null, false, { message: 'Incorrect password.' });
       }else{
-        console.log('Cry bitch');
+        console.log('Cry about it');
       }
       return done(null, user._byID);
     });
