@@ -58,7 +58,7 @@ passport.use(new LocalStrategy(
     console.log('Fetching User');
     console.log(username);
     // var user = new User();
-    User.getByUsername( {username: username}, function(err, user) {
+    User.getByUsername( username, function(err, user) {
       console.log('We made it this far!');
       console.log('User: ', user);
       console.log('Error: ', err);

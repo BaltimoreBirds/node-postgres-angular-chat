@@ -8,14 +8,26 @@ var User = Bookshelf.Model.extend({
     tableName: 'users',
 
     hasTimestamps: true,
+
+
+    validPassword: function(password){
+        console.log('This:', this.toJSON().password);
+        if(this.toJSON().password == password){
+            console.log('Equal');
+            return true;            
+        }else{
+            console.log('not equal');
+            return true;
+        }
+    }
     
 }, {
     getByUsername: function(username, callback){
-        Users.forge().fetch({username: username})
+        User.forge({'username': username}).fetch()
             .then( function(user){
                 // console.log(username);
                 console.log('Then function');
-                console.log(user.toJSON());
+                console.log(user);
                 callback(null, user);
             } )
             .catch(function(err){
@@ -30,14 +42,6 @@ var User = Bookshelf.Model.extend({
 var Users = Bookshelf.Collection.extend({
 
     model: User, 
-
-    validPassword: function(password){
-        if(this.password != password){
-            return false;
-        }else{
-            return true;
-        }
-    }
 
 });
 
