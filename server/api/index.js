@@ -12,8 +12,10 @@ app.use(bodyParser.json());
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+app.use(passport.session());
+
 var corsOptions = {
-  origin: 'http://localhost:3000'
+    origin: 'http://localhost:3000'
 };
 
 //Models and Collections
@@ -23,9 +25,9 @@ var User = require('../models/user');
 
 
 router.route('/')
-  .get(function(req, res){
-    res.sendFile(path.join(__dirname,'../','../','client', 'views','index.html'));
-  })
+    .get(function(req, res){
+        res.sendFile(path.join(__dirname,'../','../','client', 'views','index.html'));
+    })
 
 
 router.route('/users')
@@ -47,9 +49,9 @@ router.route('/users')
 		User.forge({
 			provider: req.body.provider,
 			username: req.body.username,
-      password: req.body.password,
-      status: 'active',
-      last_login: new Date(),
+            password: req.body.password,
+            status: 'active',
+            last_login: new Date(),
 		})
 		.save()
 		.then(function(user){
@@ -102,13 +104,13 @@ router.route('/users/:id')
     User.forge({id: req.params.id})
     .fetch({require: true})
     .then(function (user) {
-      user.destroy()
-      .then(function () {
-        res.json({error: true, data: {message: 'User successfully deleted'}});
-      })
-      .catch(function (err) {
-        res.status(500).json({error: true, data: {message: err.message}});
-      });
+        user.destroy()
+        .then(function () {
+          res.json({error: true, data: {message: 'User successfully deleted'}});
+        })
+        .catch(function (err) {
+          res.status(500).json({error: true, data: {message: err.message}});
+        });
     })
     .catch(function (err) {
       res.status(500).json({error: true, data: {message: err.message}});
@@ -118,7 +120,7 @@ router.route('/users/:id')
 // User login
 router.post('/login',
   passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/',
+                                   failureRedirect: '/fail',
                                    failureFlash: true })
 );
 
@@ -141,23 +143,23 @@ router.post('/login',
 
 //logout 
 router.get('/logout', function(req, res){
-  req.session.destroy()
-  req.logout();
-  console.log('logged out...redirecting');
-  res.redirect('/');
+    console.log('Is Authenticated: ',req.isAuthenticated());
+    req.session.destroy()
+    req.logout();
+    console.log('logged out...redirecting');
+    res.redirect('/');
 });
 
 
 router.route('/messages')
 	//fetch all messages
 	.get(function(req, res){
-    // console.log(Messages);
+    
 		Messages.forge()
-		.fetch()
-		.then(function(collection){
-      // console.log('collection: '+ collection);
-			res.json({error: false, data: collection.toJSON()});
-		})
+    		.fetch()
+    		.then(function(collection){
+    			res.json({error: false, data: collection.toJSON()});
+    		})
 		.catch(function(err){
 			res.status(500).json({error: true, data: {message: err.message}});
 		});
@@ -165,10 +167,17 @@ router.route('/messages')
 
 	//create a new message
 	.post(function(req, res){
-		Message.forge({user_id: req.body.user_id, text: req.body.text})
+    console.log('Is Authenticated: ', req.isAuthenticated());
+    var deserializedUser = req.session.passport.user;
+    console.log('deserializedUserID', deserializedUser);
+		Message.forge({user_id: deserializedUser, text: req.body.text})
 		.save()
 		.then(function(message){
-			res.json({error: false, data: {id: message.get('id')}});
+            Messages.forge()
+                .fetch()
+                .then(function(messages){
+                  res.json({error: false, data: {id: message.get('id'), messages: messages}});
+                });
 		})
 		.catch(function(err){
 			res.status(500).json({error: true, data: {message: err.message}});
@@ -213,13 +222,17 @@ router.route('/messages/:id')
 
   // delete a message
   .delete(function (req, res) {
-    console.log(req.params);
+    console.log('PARAMS:', req.params);
     Message.forge({id: req.params.id})
     .fetch({require: true})
     .then(function (message) {
       message.destroy()
       .then(function () {
-        res.json({error: true, data: {message: 'Message successfully deleted'}});
+        Messages.forge()
+          .fetch()
+          .then(function(collection){
+            res.json({error: false, data: {message: 'Message successfully deleted', collection: collection}});
+          });        
       })
       .catch(function (err) {
         res.status(500).json({error: true, data: {message: err.message}});

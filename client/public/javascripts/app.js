@@ -8,10 +8,11 @@ angular.module('nodeChat',[])
 	$scope.loginData = {};
 
 	//Get all todos with AJAX request to /api/v1/messages
+
 	$http.get('messages')
 		.success(function(data){
-			$scope.messageData = data; 
-			console.log(data);
+			$scope.messageData = data.data; 
+			console.log('Data: ', data.data);
 		})
 		.error(function(error){
 			console.log('Error ', error);
@@ -22,7 +23,7 @@ angular.module('nodeChat',[])
 		$http.post('messages', $scope.formData)
 		    .success(function(data) {
 		        $scope.formData = {};
-		        $scope.messageData = data;
+		        $scope.messageData = data.data.messages;
 		        console.log(data);
 		    })
 		    .error(function(error) {
@@ -34,8 +35,8 @@ angular.module('nodeChat',[])
 	$scope.deleteMessage = function(messageID) {
 		$http.delete('messages/' + messageID)
 		    .success(function(data) {
-		        $scope.messageData = data;
-		        console.log(data);
+		        $scope.messageData = data.data.collection;
+		        console.log('Deleted data', data.data.collection);
 		    })
 		    .error(function(data) {
 		        console.log('Error: ',  data);
@@ -56,15 +57,15 @@ angular.module('nodeChat',[])
 		});
 	}
 
-	// $scope.logOut = function(){
-	// 	$http.get('logout')
-	// 	.success(function(){
-	// 		alert('logged out!');
-	// 	})
-	// 	.error(function(error){
-	// 		console.log('Error logging out:', error);
-	// 	});
-	// }
+	$scope.logOut = function(){
+		$http.get('logout')
+		.success(function(){
+			console.log('logged out!');
+		})
+		.error(function(error){
+			console.log('Error logging out:', error);
+		});
+	}
 
 	//Login User
 	// $scope.authenticateUser = function(userID) {
