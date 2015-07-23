@@ -26,6 +26,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, './client', 'public')));
 app.use(session({ 
   secret: 'keyboard cat',
   resave: false,
@@ -35,7 +36,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(flash());
-app.use(express.static(path.join(__dirname, './client', 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -48,18 +48,21 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
   console.log('deserializeUser called');
-  User.fetch(id, function(err, user) {
-    done(err, {firstname: 'JJ', lastname: 'Hardy'});
-  });
+  User.forge({'id': id}).fetch()
+      .then(function(user){
+          // console.trace(); //Good debug function
+          done(null, user);
+      })
+      .catch(function(err){
+          done(err, null);
+      });
 });
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('Fetching User');
-    console.log(username);
+    // console.log(username);
     // var user = new User();
-    User.getByUsername( username, function(err, user) {
-      console.log('We made it this far!');
+    User.getByUsername( username, function(err, user) {;
       console.log('User: ', user);
       console.log('Error: ', err);
       if (err) { return done(err); }
@@ -74,7 +77,7 @@ passport.use(new LocalStrategy(
       }else{
         console.log('PASSWORD MATCH!');
       }
-      return done(null, user._byID);
+      return done(null, user);
     });
   }
 ));
