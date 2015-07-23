@@ -68,11 +68,11 @@ passport.use(new LocalStrategy(
         return done(null, false, { message: 'Incorrect username.' });
       }
       //check Password
-      if ( !user.validPassword( {password: password} )) {
-        console.log('checking password');
+      if ( !user.validPassword( password )) {
+        console.log('PASSWORD FAIL');
         return done(null, false, { message: 'Incorrect password.' });
       }else{
-        console.log('Cry about it');
+        console.log('PASSWORD MATCH!');
       }
       return done(null, user._byID);
     });

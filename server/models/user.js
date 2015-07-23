@@ -11,13 +11,11 @@ var User = Bookshelf.Model.extend({
 
 
     validPassword: function(password){
-        console.log('This:', this.toJSON().password);
-        if(this.toJSON().password == password){
-            console.log('Equal');
+        // console.log('This:', typeof password); 
+        if(this.attributes.password == password){
             return true;            
         }else{
-            console.log('not equal');
-            return true;
+            return false;
         }
     }
     
