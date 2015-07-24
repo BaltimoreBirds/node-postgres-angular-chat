@@ -9,6 +9,7 @@ var Schema = {
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false},
   },
+  // Belongs to user, belongs to chat
   messages: {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer',nullable: false, unsigned: true},
@@ -43,7 +44,7 @@ var Schema = {
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false}
   },
-  //Has and belongs to many users, has many messages
+  //Has and belongs to many users, has many messages through chat messages
   chats:{
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer', nullable: false, unsigned: true},
@@ -58,7 +59,7 @@ var Schema = {
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false}    
   },
   //Join table for chats and users many to many 
-  users_chats: {
+  chat_users: {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer', nullable: false, unsigned: true},
     chat_id: {type: 'integer', nullable: false, unsigned: true},
