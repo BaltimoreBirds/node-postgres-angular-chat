@@ -12,6 +12,7 @@ var Schema = {
   messages: {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer',nullable: false, unsigned: true},
+    chat_id: {type: 'integer',nullable: false, unsigned: true},
     text: {type: 'string', maxlegnth: 300, nullable: false},
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false}
@@ -43,22 +44,22 @@ var Schema = {
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false}
   },
-  //Has and belongs to many users, has many messages
+  //Has and belongs to many users, through chats_users, 
+  //Has and belongs to many messages, through chats_messages
   chats:{
     id: {type: 'increments', nullable: false, primary: true},
-    user_id: {type: 'integer', nullable: false, unsigned: true},
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false} 
   },
-  chat_messages:{
-    id: {type: 'increments', nullable: false, primary: true},
-    chat_id: {type: 'integer', nullable: false, unsigned: true},
-    message_id: {type: 'integer', nullable: false, unsigned: true},
-    created_at: {type: 'timestamp', maxlength: 150, nullable: false},
-    updated_at: {type: 'timestamp', maxlength: 150, nullable: false}    
-  },
+  // chats_messages:{
+  //   id: {type: 'increments', nullable: false, primary: true},
+  //   chat_id: {type: 'integer', nullable: false, unsigned: true},
+  //   message_id: {type: 'integer', nullable: false, unsigned: true},
+  //   created_at: {type: 'timestamp', maxlength: 150, nullable: false},
+  //   updated_at: {type: 'timestamp', maxlength: 150, nullable: false}    
+  // },
   //Join table for chats and users many to many 
-  users_chats: {
+  chats_users: {
     id: {type: 'increments', nullable: false, primary: true},
     user_id: {type: 'integer', nullable: false, unsigned: true},
     chat_id: {type: 'integer', nullable: false, unsigned: true},

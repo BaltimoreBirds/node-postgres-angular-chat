@@ -1,5 +1,7 @@
 var Bookshelf = require('./bookshelf');
 var Promise = require('bluebird');
+var Chat = require('./chat');
+var ChatUser = require('./chatUser');
 
 //Only uses Bookshelf in data structures
 
@@ -9,7 +11,12 @@ var User = Bookshelf.Model.extend({
 
     hasTimestamps: true,
 
-
+    chats: function(){
+        return this.belongsToMany(Chat).through(ChatUser);
+    },
+    messages: function(){
+        return this.hasMany(Message);
+    },
     validPassword: function(password){
         // console.log('This:', typeof password); 
         if(this.attributes.password == password){
@@ -17,7 +24,9 @@ var User = Bookshelf.Model.extend({
         }else{
             return false;
         }
-    }
+    },
+
+
     
 }, {
     getByUsername: function(username, callback){

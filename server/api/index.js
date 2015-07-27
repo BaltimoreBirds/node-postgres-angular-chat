@@ -22,6 +22,8 @@ var corsOptions = {
 var Message = require('../models/message');
 var Messages = require('../collections/messages');
 var User = require('../models/user');
+var ChatUser = require('../models/chatUser');
+var Chats = require('../collections/chats');
 
 
 router.route('/')
@@ -45,7 +47,7 @@ router.route('/users')
 	})
 	//create a user
 	.post(function(req, res){
-    console.log(req.body.provider);
+    console.log('USER creating', req.body);
 		User.forge({
 			provider: req.body.provider,
 			username: req.body.username,
@@ -117,10 +119,11 @@ router.route('/users/:id')
     });
   });
 
+
 // User login
 router.post('/login',
   passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/fail',
+                                   failureRedirect: '/',
                                    failureFlash: true })
 );
 
@@ -151,6 +154,62 @@ router.get('/logout', function(req, res){
 });
 
 
+router.route('/chats')
+  .get(function(req, res){
+    var currentUser = req.session.passport.user;
+    // console.log('We HERE?', currentUser);
+    User.forge({'id': currentUser}).fetch({
+          withRelated: ['chats']
+        }).then(function(user){
+          var chatCollection = user.related('chats');
+          // console.log('ChatCollection: ', chatCollection);
+          chatCollection.fetch({
+            withRelated: ['messages']
+            }).then(function(collection){
+              // console.log('Chat Collection w/ realtion: ', collection);
+              res.json({error: err, data: {chats: collection}});
+            })
+            .catch(function(err){
+              res.status(500).json({error: true, data: {message: err.message}});
+            });
+        })
+        .catch(function(err){
+          res.status(500).json({error: true, data: {message: err.message}});
+        });
+  })
+  .post(function(req, res){
+    console.log(req.body);
+    User.getByUsername(req.body.username, function(err, user){
+      console.log('Creating Chat...');
+      console.log('Current User:', req.session.passport.user);
+      var currentUser = req.session.passport.user;
+      ChatUser.createChat(currentUser, user.id, function(err, chat){
+        User.forge({'id': currentUser})
+          .fetch({
+            withRelated: ['chats']
+          }).then(function(user){
+            // console.log('Users relation: ', user);
+            // console.log('Users chats: ', user.related('chats').toJSON());
+            var chatCollection = user.related('chats');
+            console.log('ChatCollection: ', chatCollection);
+            chatCollection.fetch({
+              withRelated: ['messages']
+              }).then(function(collection){
+                console.log('Chat Collection w/ realtion: ', collection);
+                res.json({error: err, data: {chats: collection}});
+              })
+              .catch(function(err){
+                res.status(500).json({error: true, data: {message: err.message}});
+              });
+          })
+          .catch(function(err){
+            res.status(500).json({error: true, data: {message: err.message}});
+          });
+      });
+
+    });
+  });
+
 router.route('/messages')
 	//fetch all messages
 	.get(function(req, res){
@@ -170,7 +229,8 @@ router.route('/messages')
     console.log('Is Authenticated: ', req.isAuthenticated());
     var deserializedUser = req.session.passport.user;
     console.log('deserializedUserID', deserializedUser);
-		Message.forge({user_id: deserializedUser, text: req.body.text})
+    console.log('chatId', req.body);
+		Message.forge({user_id: deserializedUser, chat_id: req.body.chatId, text: req.body.text})
 		.save()
 		.then(function(message){
             Messages.forge()
