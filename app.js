@@ -40,6 +40,12 @@ app.use(flash());
 app.use('/', routes);
 app.use('/users', users);
 
+//use Flash messages
+app.use(function(req, res, next){
+    res.locals.success_messages = req.flash('success_messages');
+    res.locals.error_messages = req.flash('error_messages');
+    next();
+});
 
 passport.serializeUser(function(user, done) {
   console.log('serializeUser called');
@@ -82,12 +88,6 @@ passport.use(new LocalStrategy(
   }
 ));
 
-//use Flash messages
-app.use(function(req, res, next){
-    res.locals.success_messages = req.flash('success_messages');
-    res.locals.error_messages = req.flash('error_messages');
-    next();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

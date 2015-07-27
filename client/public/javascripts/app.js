@@ -2,10 +2,13 @@ angular.module('nodeChat',[])
 
 .controller('mainController', function($scope, $http){
 
-	$scope.formData= {};
+	$scope.formMessageData= {};
+	$scope.formMessageData.chat = {};
 	$scope.messageData = {};
+	$scope.chatsData = {};
 	$scope.userData = {};
 	$scope.loginData = {};
+	$scope.chatCreateData = {};
 
 	//Get all todos with AJAX request to /api/v1/messages
 
@@ -18,11 +21,31 @@ angular.module('nodeChat',[])
 			console.log('Error ', error);
 		});
 
+	$http.get('chats')
+		.success(function(data){
+			$scope.chatsData = data.data.chats;
+		})
+		.error(function(error){
+			console.log('Chat retrieval ERROR', error);
+		});
+
+	//Create a new Chat
+	$scope.createChat = function(userID) {
+		$http.post('chats', $scope.chatCreateData)
+			.success(function(data){
+				// console.log('Data: ', data.data);
+				$scope.chatsData = data.data.chats;
+			})
+			.error(function(error){
+				console.log('Create Chat ERROR', error);
+			});
+	}
+
 	// Create a new message
 	$scope.createMessage = function(messageID) {
-		$http.post('messages', $scope.formData)
+		$http.post('messages', $scope.formMessageData)
 		    .success(function(data) {
-		        $scope.formData = {};
+		        $scope.formMessageData = {};
 		        $scope.messageData = data.data.messages;
 		        console.log(data);
 		    })

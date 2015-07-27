@@ -66,20 +66,47 @@
         <hr>
         <h1 class="lead">Author: Michael Swanson</h1>
       </div>
-
-      <div class="todo-list">
-        <ul ng-repeat="message in messageData">
-          <li>{{ message.text}}&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id)">Delete</li><hr></hr>
-        </ul>
-      </div>  
-
-      <div class="todo-form">
-        <form>
-          <div class="form-group">
-            <input type="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formData.text">
+      </br>
+      <form style="border: 1px solid black;">
+        &nbsp;
+        <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username"><br>&nbsp;
+        <button class="btn btn-primary btn-lg" ng-click="createChat()">New Chat</button>
+        </br>&nbsp;
+      </form>
+      <div class="chat-wrap">
+        </br>&nbsp;
+        <ul ng-repeat="chat in chatsData">
+          <ul ng-repeat="message in chat.message">
+            <li>{{ message.text }}</li>
+          </ul>
+          <div class="message-form">
+            <form>
+              <div class="form-group">
+                <input name="chatId" type="chatId" class="form-control input-lg" ng-model="chat.id" />
+                <input type="text" name="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formMessageData.text">
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage()">Enter</button></br>&nbsp;
+            </form>
           </div>
-          <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage()">Enter</button></br>&nbsp;
-        </form>
+        </ul>
+      </div>
+      <div>
+        </br>&nbsp;
+        <!-- <div class="message-list">
+          <ul ng-repeat="message in messageData">
+            <li>{{ message.text}}&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id)">Delete</li><hr></hr>
+          </ul>
+        </div>  
+
+        <div class="message-form">
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formData.text">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage()">Enter</button></br>&nbsp;
+          </form>
+        </div> -->
+
       </div>
 
       <div id="signup_form">
