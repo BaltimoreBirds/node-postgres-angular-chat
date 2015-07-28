@@ -53,7 +53,7 @@
       <div class="header">
         <h1>ExpressChat</h1>
         </br>
-        <p ng-show="isLoggedIn.status">{{isLoggedIn.id}}<button type="submit" class="btn btn-primary btn-sm" style="float: right;" ng-click="logOut()">Log Out</button></p></br>
+        <p ng-show="user.status">{{user.username}}<button type="submit" class="btn btn-primary btn-sm" style="float: right;" ng-click="logOut()">Log Out</button></p></br>
         <!-- <div
           class="fb-like"
           data-share="true"
@@ -63,14 +63,14 @@
         <hr>
       </div>
       </br>
-      <form style="border: 1px solid black;">
+      <form style="border: 1px solid black;" ng-show="user.status">
         &nbsp;
         <p>Start a new chat</p>
         <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username"><br>&nbsp;
         <button class="btn btn-primary btn-lg" ng-click="createChat()">New Chat</button>
         </br>&nbsp;
       </form>
-      <div class="chat-wrap" ng-show="isLoggedIn.status">
+      <div class="chat-wrap" ng-show="user.status">
         </br>&nbsp;
         <ul ng-repeat="chat in chatsData">
           <ul ng-repeat="message in chat.messages">
@@ -105,7 +105,7 @@
 
       </div>
 
-      <div id="signup_form" ng-hide="isLoggedIn.status">
+      <div id="signup_form" ng-hide="user.status">
         <p>SIGN UP</p>
         <form>
             <div>
@@ -125,7 +125,7 @@
             </div>
         </form>
       </div>
-      <form action="/login" method="post" ng-hide="isLoggedIn.status">
+      <form action="/login" method="post" ng-hide="user.status">
           <p>Log in</p>
           <div>
               <label>Username:</label>

@@ -2,7 +2,7 @@ angular.module('nodeChat',[])
 
 .controller('mainController', function($scope, $http, $rootScope){
 
-	$rootScope.isLoggedIn = {};
+	$rootScope.user = {};
 	$scope.formMessageData= {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
@@ -14,9 +14,8 @@ angular.module('nodeChat',[])
 	  //update the DOM with newValue
 	});
 
-	checkLogin();
 	//Check If user is logged in
-
+	checkLogin();
 	
 	//Get all todos with AJAX request to /api/v1/messages
 	// $http.get('messages')
@@ -27,18 +26,30 @@ angular.module('nodeChat',[])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
-	function getUser(){
-		
+
+	function getUserInfo(userID){
+		$http.get('users/' + userID)
+			.success(function(data){
+				$rootScope.user.username = data.data.username;
+				console.log(data);
+			})
+			.error(function(err){
+				console.log('User Retrieval Error:', err);
+			});
 	}
 	
 	function checkLogin(){
 		$http.get('checkLogin')
 			.success(function(data){
-				console.log('LOGIN', data);
 				if(data.loggedIn){
-					$rootScope.isLoggedIn.status = data.loggedIn;
-					$rootScope.isLoggedIn.id = data.user
+					getUserInfo(data.user);
+					$rootScope.user.status = data.loggedIn;
+					$rootScope.user.id = data.user;
 					getChats();
+				}else{
+					$rootScope.user.status = data.loggedIn;
+					$rootScope.user.id = null;
+					$rootScope.user.username = null;
 				}
 			})
 			.error(function(error){
