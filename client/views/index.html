@@ -82,10 +82,9 @@
           <div class="message-form">
             <form>
               <div class="form-group">
-                <input name="chatId" type="chatId" class="form-control input-lg" ng-model="chat.id" />
                 <input type="text" name="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formMessageData.text">
               </div>
-              <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage()">Enter</button></br>&nbsp;
+              <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage(chat.id)">Enter</button></br>&nbsp;
             </form>
           </div>
         </ul>
