@@ -33,36 +33,36 @@ router.route('/')
 
 
 router.route('/users')
-	//fetch all users
-	.get(function(req, res){
-		Users.forge()
-		.fetch()
-		.then(function(collection){
+  //fetch all users
+  .get(function(req, res){
+    Users.forge()
+    .fetch()
+    .then(function(collection){
       // console.log('collection: '+collection);
-			res.json({error: false, data: collection.toJSON()});
-		})
-		.catch(function(err){
-			res.status(500).json({error: true, data:{message: err.message}})
-		});
-	})
-	//create a user
-	.post(function(req, res){
+      res.json({error: false, data: collection.toJSON()});
+    })
+    .catch(function(err){
+      res.status(500).json({error: true, data:{message: err.message}})
+    });
+  })
+  //create a user
+  .post(function(req, res){
     console.log('USER creating', req.body);
-		User.forge({
-			provider: req.body.provider,
-			username: req.body.username,
+    User.forge({
+      provider: req.body.provider,
+      username: req.body.username,
             password: req.body.password,
             status: 'active',
             last_login: new Date(),
-		})
-		.save()
-		.then(function(user){
-			res.json({error: false, data: {id: user.get('id')}});
-		})
-		.catch(function(err){
-			res.status(500).json({error: true, data: {message: err.message}});
-		})
-	});
+    })
+    .save()
+    .then(function(user){
+      res.json({error: false, data: {id: user.get('id')}});
+    })
+    .catch(function(err){
+      res.status(500).json({error: true, data: {message: err.message}});
+    })
+  });
 
 router.route('/users/:id')
   // fetch user
@@ -179,8 +179,15 @@ router.route('/chats')
   })
   .post(function(req, res){
     User.getByUsername(req.body.username, function(err, user){
-      console.log('Creating Chat...');
+      if(err != null){
+        console.log('ERROR NOT NULL');
+        res.status(404).json({error: true, data: {message: err.message}});
+        return;
+      }
       var currentUser = req.session.passport.user;
+      console.log('User: ', user);
+      console.log('Err: ', err);
+      console.log('Creating Chat...');
       ChatUser.createChat(currentUser, user.id, function(err, chat){
         User.forge({'id': currentUser})
           .fetch({
@@ -207,33 +214,34 @@ router.route('/chats')
   });
 
 router.route('/messages')
-	//fetch all messages
-	.get(function(req, res){
+  //fetch all messages
+  .get(function(req, res){
     
-		Messages.forge()
-    		.fetch()
-    		.then(function(collection){
-    			res.json({error: false, data: collection.toJSON()});
-    		})
-		.catch(function(err){
-			res.status(500).json({error: true, data: {message: err.message}});
-		});
-	})
+    Messages.forge()
+        .fetch()
+        .then(function(collection){
+          res.json({error: false, data: collection.toJSON()});
+        })
+    .catch(function(err){
+      res.status(500).json({error: true, data: {message: err.message}});
+    });
+  })
 
-	//create a new message
-	.post(function(req, res){
+  //create a new message
+  .post(function(req, res){
     console.log('Is Authenticated: ', req.isAuthenticated());
     var deserializedUser = req.session.passport.user;
-    console.log('chatId', req.body.chatID);
-		Message.forge({user_id: deserializedUser, chat_id: req.body.chatID, text: req.body.text})
-		.save()
-		.then(function(message){
+    console.log('Body', req.body);
+    console.log('text', req.body[req.body.chatID].text);
+    Message.forge({user_id: deserializedUser, chat_id: req.body.chatID, text: req.body[req.body.chatID].text})
+    .save()
+    .then(function(message){
       res.json({error: false, data: {message: message}});
-		})
-		.catch(function(err){
-			res.status(500).json({error: true, data: {message: err.message}});
-		});
-	});
+    })
+    .catch(function(err){
+      res.status(500).json({error: true, data: {message: err.message}});
+    });
+  });
 
 router.route('/messages/:id')
   // fetch all messages

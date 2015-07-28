@@ -32,14 +32,12 @@ var User = Bookshelf.Model.extend({
     getByUsername: function(username, callback){
         User.forge({'username': username}).fetch()
             .then( function(user){
-                // console.log(username);
-                console.log('Then function');
-                console.log(user);
+                console.log('getByUsername SUCCESS');
                 callback(null, user);
-            } )
+            })
             .catch(function(err){
-                console.log('catch error');
-                callback(err);
+                console.log('getByUsername CATCH ERROR');
+                callback(err, null);
             });
         
     }

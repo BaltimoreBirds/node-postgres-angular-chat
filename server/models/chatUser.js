@@ -28,7 +28,7 @@ var ChatUser = Bookshelf.Model.extend({
     		ChatUser.forge({'user_id': user2, 'chat_id': chat.id}).save().then(function(chatUser){
     			// console.log('chatUser2:', chatUser);
     		});
-    		callback(null, chat.id);
+    		callback(null, chat);
     	});
     }
 

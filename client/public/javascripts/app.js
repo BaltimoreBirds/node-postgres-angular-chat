@@ -4,22 +4,26 @@ angular.module('nodeChat',[])
 
 	$scope.formMessageData= {};
 	$scope.messageData = {};
-	$scope.chatsData = {};
+	$scope.chatsData = [];
 	$scope.userData = {};
 	$scope.loginData = {};
 	$scope.chatCreateData = {};
 
+	$scope.$watch('chatsData', function(newValue, oldValue) {
+	  //update the DOM with newValue
+	});
+
 
 	//Get all todos with AJAX request to /api/v1/messages
 
-	$http.get('messages')
-		.success(function(data){
-			$scope.messageData = data.data; 
-			console.log('Data: ', data.data);
-		})
-		.error(function(error){
-			console.log('Error ', error);
-		});
+	// $http.get('messages')
+	// 	.success(function(data){
+	// 		$scope.messageData = data.data; 
+	// 		console.log('Data: ', data.data);
+	// 	})
+	// 	.error(function(error){
+	// 		console.log('Error ', error);
+	// 	});
 
 	$http.get('chats')
 		.success(function(data){
@@ -33,8 +37,8 @@ angular.module('nodeChat',[])
 	$scope.createChat = function(userID) {
 		$http.post('chats', $scope.chatCreateData)
 			.success(function(data){
-				// console.log('Data: ', data.data);
 				$scope.chatsData = data.data.chats;
+				console.log('chatsData: ', $scope.chatsData);
 			})
 			.error(function(error){
 				console.log('Create Chat ERROR', error);
@@ -46,12 +50,13 @@ angular.module('nodeChat',[])
 		$scope.formMessageData.chatID = chatID;
 		$http.post('messages', $scope.formMessageData)
 		    .success(function(data) {
-		        $scope.formMessageData = {};
-		        //TRYING TO FIGURE OUT HOW TO ADD MESSAGE TO THE APPROPRIATE CHAT'S RELATION OF MESSAGES
-		        console.log($scope.messageData);
-		        console.log('Data', data);
-		        // $scope.messageData = data.data.messages;
-		        // console.log(data.data);
+		        angular.forEach($scope.chatsData, function(chat, key){
+		        	console.log('MEssages associated ID:', data.data.message.chat_id)
+		        	if(chat.id == data.data.message.chat_id){
+		        		console.log('Chat object:', chat);
+		        		chat.messages.push(data.data.message);
+		        	}
+		        });
 		    })
 		    .error(function(error) {
 		        console.log('Error: ', error);

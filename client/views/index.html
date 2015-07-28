@@ -9,22 +9,18 @@
         padding: 50px;
         font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
       }
-
       a {
         color: #00B7FF;
       }
-
       ul {
         list-style-type: none;
         padding-left: 10px;
       }
-
       .container {
         max-width: 400px;
         background-color: #eeeeee;
         border: 1px solid black;
       }
-
       .header {
         text-align: center;
       }
@@ -44,7 +40,6 @@
           version    : 'v2.3'
         });
       };
-
       (function(d, s, id){
          var js, fjs = d.getElementsByTagName(s)[0];
          if (d.getElementById(id)) {return;}
@@ -76,16 +71,17 @@
       <div class="chat-wrap">
         </br>&nbsp;
         <ul ng-repeat="chat in chatsData">
-          <ul ng-repeat="message in chat.message">
+          <ul ng-repeat="message in chat.messages">
             <li>{{ message.text }}</li>
           </ul>
           <div class="message-form">
-            <form>
+            <ng-form>
               <div class="form-group">
-                <input type="text" name="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formMessageData.text">
+                <input type="text" name="chatID" class="form-control input-lg" ng-model="chat.id">
+                <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} form-control input-lg" placeholder="Send a message..." ng-model="formMessageData[chat.id].text">
               </div>
               <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage(chat.id)">Enter</button></br>&nbsp;
-            </form>
+            </ng-form>
           </div>
         </ul>
       </div>
@@ -96,7 +92,6 @@
             <li>{{ message.text}}&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id)">Delete</li><hr></hr>
           </ul>
         </div>  
-
         <div class="message-form">
           <form>
             <div class="form-group">
