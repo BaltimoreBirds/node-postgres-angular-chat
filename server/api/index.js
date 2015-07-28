@@ -213,15 +213,26 @@ router.route('/chats')
     });
   });
 
+router.route('/checkLogin')
+  .get(function(req, res){
+    console.log('YOU RANg?')
+    var currentUser = req.session.passport.user;
+    if(currentUser){
+      res.json({error: false, user: currentUser, loggedIn: true})
+    }else{
+      res.json({error: false, user: currentUser, loggedIn: false})
+    }
+  });
+
 router.route('/messages')
   //fetch all messages
   .get(function(req, res){
     
     Messages.forge()
-        .fetch()
-        .then(function(collection){
-          res.json({error: false, data: collection.toJSON()});
-        })
+      .fetch()
+      .then(function(collection){
+        res.json({error: false, data: collection.toJSON()});
+      })
     .catch(function(err){
       res.status(500).json({error: true, data: {message: err.message}});
     });

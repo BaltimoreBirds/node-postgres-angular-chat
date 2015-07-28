@@ -1,7 +1,8 @@
 angular.module('nodeChat',[])
 
-.controller('mainController', function($scope, $http){
+.controller('mainController', function($scope, $http, $rootScope){
 
+	$rootScope.isLoggedIn = {};
 	$scope.formMessageData= {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
@@ -9,13 +10,15 @@ angular.module('nodeChat',[])
 	$scope.loginData = {};
 	$scope.chatCreateData = {};
 
-	$scope.$watch('chatsData', function(newValue, oldValue) {
+	$scope.$watch('chatsData', function(newChats, oldChats) {
 	  //update the DOM with newValue
 	});
 
+	checkLogin();
+	//Check If user is logged in
 
+	
 	//Get all todos with AJAX request to /api/v1/messages
-
 	// $http.get('messages')
 	// 	.success(function(data){
 	// 		$scope.messageData = data.data; 
@@ -24,14 +27,34 @@ angular.module('nodeChat',[])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
+	function getUser(){
+		
+	}
+	
+	function checkLogin(){
+		$http.get('checkLogin')
+			.success(function(data){
+				console.log('LOGIN', data);
+				if(data.loggedIn){
+					$rootScope.isLoggedIn.status = data.loggedIn;
+					$rootScope.isLoggedIn.id = data.user
+					getChats();
+				}
+			})
+			.error(function(error){
 
-	$http.get('chats')
-		.success(function(data){
-			$scope.chatsData = data.data.chats;
-		})
-		.error(function(error){
-			console.log('Chat retrieval ERROR', error);
-		});
+			});
+	}
+
+	function getChats(){
+		$http.get('chats')
+			.success(function(data){
+				$scope.chatsData = data.data.chats;
+			})
+			.error(function(error){
+				console.log('Chat retrieval ERROR', error);
+			});
+	}
 
 	//Create a new Chat
 	$scope.createChat = function(userID) {
@@ -49,30 +72,30 @@ angular.module('nodeChat',[])
 	$scope.createMessage = function(chatID) {
 		$scope.formMessageData.chatID = chatID;
 		$http.post('messages', $scope.formMessageData)
-		    .success(function(data) {
-		        angular.forEach($scope.chatsData, function(chat, key){
-		        	console.log('MEssages associated ID:', data.data.message.chat_id)
-		        	if(chat.id == data.data.message.chat_id){
-		        		console.log('Chat object:', chat);
-		        		chat.messages.push(data.data.message);
-		        	}
-		        });
-		    })
-		    .error(function(error) {
-		        console.log('Error: ', error);
-		    });
+	    .success(function(data) {
+        angular.forEach($scope.chatsData, function(chat, key){
+        	console.log('MEssages associated ID:', data.data.message.chat_id)
+        	if(chat.id == data.data.message.chat_id){
+        		console.log('Chat object:', chat);
+        		chat.messages.push(data.data.message);
+        	}
+        });
+	    })
+	    .error(function(error) {
+        console.log('Error: ', error);
+	    });
     };
 
 	// Delete a message
 	$scope.deleteMessage = function(messageID) {
 		$http.delete('messages/' + messageID)
-		    .success(function(data) {
-		        $scope.messageData = data.data.collection;
-		        console.log('Deleted data', data.data.collection);
-		    })
-		    .error(function(data) {
-		        console.log('Error: ',  data);
-		    });
+	    .success(function(data) {
+        $scope.messageData = data.data.collection;
+        console.log('Deleted data', data.data.collection);
+	    })
+	    .error(function(data) {
+        console.log('Error: ',  data);
+	    });
 	};
 
 	//Create a user
@@ -91,12 +114,13 @@ angular.module('nodeChat',[])
 
 	$scope.logOut = function(){
 		$http.get('logout')
-		.success(function(){
-			console.log('logged out!');
-		})
-		.error(function(error){
-			console.log('Error logging out:', error);
-		});
+			.success(function(){
+				console.log('logged out!');
+				checkLogin();
+			})
+			.error(function(error){
+				console.log('Error logging out:', error);
+			});
 	}
 
 	// $scope.fBAuthenticate = function(userID) {

@@ -52,6 +52,8 @@
       
       <div class="header">
         <h1>ExpressChat</h1>
+        </br>
+        <p ng-show="isLoggedIn.status">{{isLoggedIn.id}}<button type="submit" class="btn btn-primary btn-sm" style="float: right;" ng-click="logOut()">Log Out</button></p></br>
         <!-- <div
           class="fb-like"
           data-share="true"
@@ -59,16 +61,16 @@
           data-show-faces="true">
         </div> -->
         <hr>
-        <h1 class="lead">Author: Michael Swanson</h1>
       </div>
       </br>
       <form style="border: 1px solid black;">
         &nbsp;
+        <p>Start a new chat</p>
         <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username"><br>&nbsp;
         <button class="btn btn-primary btn-lg" ng-click="createChat()">New Chat</button>
         </br>&nbsp;
       </form>
-      <div class="chat-wrap">
+      <div class="chat-wrap" ng-show="isLoggedIn.status">
         </br>&nbsp;
         <ul ng-repeat="chat in chatsData">
           <ul ng-repeat="message in chat.messages">
@@ -103,7 +105,7 @@
 
       </div>
 
-      <div id="signup_form">
+      <div id="signup_form" ng-hide="isLoggedIn.status">
         <p>SIGN UP</p>
         <form>
             <div>
@@ -123,7 +125,7 @@
             </div>
         </form>
       </div>
-      <form action="/login" method="post">
+      <form action="/login" method="post" ng-hide="isLoggedIn.status">
           <p>Log in</p>
           <div>
               <label>Username:</label>
@@ -138,8 +140,9 @@
           </div>
       </form>
       <br/>
-      <button type="submit" class="btn btn-primary btn-lg" ng-click="logOut()">Log Out</button>
-      
+      <div>
+        <p style="text-align: right; font-size: 10px;" class="lead">Author: Michael Swanson</p>
+      </div>
     <!-- <input class="btn btn-primary btn-lg" type="submit" value="FB Log in" ng-click="fBAuthenticate()"/> -->
     </div>
     <script src="http://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
