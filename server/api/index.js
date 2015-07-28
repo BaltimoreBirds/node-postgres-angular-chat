@@ -178,24 +178,20 @@ router.route('/chats')
         });
   })
   .post(function(req, res){
-    console.log(req.body);
     User.getByUsername(req.body.username, function(err, user){
       console.log('Creating Chat...');
-      console.log('Current User:', req.session.passport.user);
       var currentUser = req.session.passport.user;
       ChatUser.createChat(currentUser, user.id, function(err, chat){
         User.forge({'id': currentUser})
           .fetch({
             withRelated: ['chats']
           }).then(function(user){
-            // console.log('Users relation: ', user);
             // console.log('Users chats: ', user.related('chats').toJSON());
             var chatCollection = user.related('chats');
-            console.log('ChatCollection: ', chatCollection);
             chatCollection.fetch({
               withRelated: ['messages']
               }).then(function(collection){
-                console.log('Chat Collection w/ realtion: ', collection);
+                // console.log('Chat Collection w/ realtion: ', collection);
                 res.json({error: err, data: {chats: collection}});
               })
               .catch(function(err){
@@ -228,16 +224,11 @@ router.route('/messages')
 	.post(function(req, res){
     console.log('Is Authenticated: ', req.isAuthenticated());
     var deserializedUser = req.session.passport.user;
-    console.log('deserializedUserID', deserializedUser);
-    console.log('chatId', req.body);
-		Message.forge({user_id: deserializedUser, chat_id: req.body.chatId, text: req.body.text})
+    console.log('chatId', req.body.chatID);
+		Message.forge({user_id: deserializedUser, chat_id: req.body.chatID, text: req.body.text})
 		.save()
 		.then(function(message){
-            Messages.forge()
-                .fetch()
-                .then(function(messages){
-                  res.json({error: false, data: {id: message.get('id'), messages: messages}});
-                });
+      res.json({error: false, data: {message: message}});
 		})
 		.catch(function(err){
 			res.status(500).json({error: true, data: {message: err.message}});

@@ -3,12 +3,12 @@ angular.module('nodeChat',[])
 .controller('mainController', function($scope, $http){
 
 	$scope.formMessageData= {};
-	$scope.formMessageData.chat = {};
 	$scope.messageData = {};
 	$scope.chatsData = {};
 	$scope.userData = {};
 	$scope.loginData = {};
 	$scope.chatCreateData = {};
+
 
 	//Get all todos with AJAX request to /api/v1/messages
 
@@ -42,12 +42,16 @@ angular.module('nodeChat',[])
 	}
 
 	// Create a new message
-	$scope.createMessage = function(messageID) {
+	$scope.createMessage = function(chatID) {
+		$scope.formMessageData.chatID = chatID;
 		$http.post('messages', $scope.formMessageData)
 		    .success(function(data) {
 		        $scope.formMessageData = {};
-		        $scope.messageData = data.data.messages;
-		        console.log(data);
+		        //TRYING TO FIGURE OUT HOW TO ADD MESSAGE TO THE APPROPRIATE CHAT'S RELATION OF MESSAGES
+		        console.log($scope.messageData);
+		        console.log('Data', data);
+		        // $scope.messageData = data.data.messages;
+		        // console.log(data.data);
 		    })
 		    .error(function(error) {
 		        console.log('Error: ', error);
