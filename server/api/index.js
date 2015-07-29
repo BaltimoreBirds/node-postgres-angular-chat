@@ -22,6 +22,7 @@ var corsOptions = {
 var Message = require('../models/message');
 var Messages = require('../collections/messages');
 var User = require('../models/user');
+var Chat = require('../models/chat');
 var ChatUser = require('../models/chatUser');
 var Chats = require('../collections/chats');
 
@@ -157,17 +158,14 @@ router.get('/logout', function(req, res){
 router.route('/chats')
   .get(function(req, res){
     var currentUser = req.session.passport.user;
-    // console.log('We HERE?', currentUser);
     User.forge({'id': currentUser}).fetch({
           withRelated: ['chats']
         }).then(function(user){
           var chatCollection = user.related('chats');
-          // console.log('ChatCollection: ', chatCollection);
           chatCollection.fetch({
             withRelated: ['messages']
             }).then(function(collection){
-              // console.log('Chat Collection w/ realtion: ', collection);
-              res.json({error: err, data: {chats: collection}});
+              res.json({error: false, data: {chats: collection}});
             })
             .catch(function(err){
               res.status(500).json({error: true, data: {message: err.message}});
@@ -185,20 +183,16 @@ router.route('/chats')
         return;
       }
       var currentUser = req.session.passport.user;
-      console.log('User: ', user);
-      console.log('Err: ', err);
       console.log('Creating Chat...');
-      ChatUser.createChat(currentUser, user.id, function(err, chat){
+      Chat.createChat(currentUser, user.id, function(err, chat){
         User.forge({'id': currentUser})
           .fetch({
             withRelated: ['chats']
           }).then(function(user){
-            // console.log('Users chats: ', user.related('chats').toJSON());
             var chatCollection = user.related('chats');
             chatCollection.fetch({
               withRelated: ['messages']
               }).then(function(collection){
-                // console.log('Chat Collection w/ realtion: ', collection);
                 res.json({error: err, data: {chats: collection}});
               })
               .catch(function(err){
@@ -215,7 +209,6 @@ router.route('/chats')
 
 router.route('/checkLogin')
   .get(function(req, res){
-    console.log('YOU RANg?')
     var currentUser = req.session.passport.user;
     if(currentUser){
       res.json({error: false, user: currentUser, loggedIn: true})
@@ -313,5 +306,12 @@ router.route('/messages/:id')
     });
   });
 
+router.route('/chatUsers/:id')
+  .get(function(req, res){
+    console.log('CHATID: ', req.params.id);
+    ChatUser.getChatUsers(req.params.id, function(err, collection){
+      console.log('HO BOY!');
+    });
+  })
 
 module.exports = router;

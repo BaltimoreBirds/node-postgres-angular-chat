@@ -1,6 +1,6 @@
 var Bookshelf = require('./bookshelf');
 var Promise = require('bluebird');
-var Chat = require('./chat');
+
 
 //Only uses Bookshelf in data structures
 
@@ -19,18 +19,20 @@ var ChatUser = Bookshelf.Model.extend({
     }
     
 }, {
-    createChat: function(user1, user2, callback){
-    	// console.log('ID:', user1, user2);
-    	Chat.forge().save().then(function(chat){
-    		ChatUser.forge({'user_id': user1, 'chat_id': chat.id}).save().then(function(chatUser){
-    			// console.log('chatUser1:', chatUser);
-    		});
-    		ChatUser.forge({'user_id': user2, 'chat_id': chat.id}).save().then(function(chatUser){
-    			// console.log('chatUser2:', chatUser);
-    		});
-    		callback(null, chat);
-    	});
-    }
+    //Trying to return a collection of the users in the chat with chatID
+    getChatUsers: function(chatID, callback){
+        ChatUser.forge({'chat_id': chatID}).fetch()
+          .then(function(chatUsersCollection){
+            console.log('Collection: ', chatUsersCollection);
+            for(chatUser in chatUsersCollection){
+              console.log('Value:', chatUser);
+            }
+            // res.json({error: false, otherUser: otherUser});
+          })
+          .catch(function(err){
+            callback(err, null)
+          });
+      }
 
 });
 

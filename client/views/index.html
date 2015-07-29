@@ -14,10 +14,10 @@
       }
       ul {
         list-style-type: none;
-        padding-left: 10px;
+        padding-left: 0px;
       }
       .container {
-        max-width: 400px;
+        max-width: 1000px;
         background-color: #eeeeee;
         border: 1px solid black;
       }
@@ -28,6 +28,35 @@
         color: black;
         margin: 10px 0;
         border-top: solid 1px black;
+      }
+      .loginForm{
+        width: 47%;
+        float: left;
+        margin-left: 2%;
+      }
+      #signup_form{
+        width: 47%;
+        float: left;
+        margin-right: 2%;
+      }
+      .credits{
+        position: relative;
+        width: 100%; 
+        float: left;
+      }
+      @media(max-width: 400px){
+       .loginForm{
+          width: 100%;
+          float: left;
+          margin-left: 2%;
+        }
+        #signup_form{
+          width: 100%;
+          float: left;
+          margin-right: 2%;
+          margin-bottom: 20px;
+
+        } 
       }
     </style>
   </head>
@@ -53,56 +82,44 @@
       <div class="header">
         <h1>ExpressChat</h1>
         </br>
-        <p ng-show="user.status">{{user.username}}<button type="submit" class="btn btn-primary btn-sm" style="float: right;" ng-click="logOut()">Log Out</button></p></br>
-        <!-- <div
+        <p style="font-size: 18px; text-align: right;" ng-show="user.status">{{user.username}} <button type="submit" class="btn btn-primary btn-sm" style="display: inline;" ng-click="logOut()">Log Out</button></p></br>
+        <div
           class="fb-like"
           data-share="true"
           data-width="450"
-          data-show-faces="true">
-        </div> -->
+          data-show-faces="true"
+          style="text-align: left; position: relative; width: 100%;">
+        </div>
         <hr>
       </div>
       </br>
-      <form style="border: 1px solid black;" ng-show="user.status">
+      <form style="max-width: 400px; border: 1px solid black;" ng-show="user.status">
         &nbsp;
-        <p>Start a new chat</p>
+        <p>&nbsp;Start a new chat</p>
         <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username"><br>&nbsp;
         <button class="btn btn-primary btn-lg" ng-click="createChat()">New Chat</button>
         </br>&nbsp;
       </form>
       <div class="chat-wrap" ng-show="user.status">
         </br>&nbsp;
-        <ul ng-repeat="chat in chatsData">
-          <ul ng-repeat="message in chat.messages">
-            <li>{{ message.text }}</li>
-          </ul>
-          <div class="message-form">
-            <ng-form>
+        <ul ng-repeat="chat in chatsData" style="border: 1px solid black;">
+          <div class="chatTitle">
+            {{returnOtherChatUsers(chat.id)}}
+          </div>
+          <div style="border: 1px solid black; margin: 5px;">
+            <ul ng-repeat="message in chat.messages" style="padding: 5px; 0 0 5px;">
+              <li>{{ message.text }}</li>
+            </ul>
+          </div>
+          <div class="message-form" style="margin: 5px;">
+            <form ng-submit="createMessage(chat.id)">
               <div class="form-group">
-                <input type="text" name="chatID" class="form-control input-lg" ng-model="chat.id">
                 <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} form-control input-lg" placeholder="Send a message..." ng-model="formMessageData[chat.id].text">
               </div>
-              <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage(chat.id)">Enter</button></br>&nbsp;
-            </ng-form>
+              <button type="submit" class="btn btn-primary btn-sm" style="position: absolute; left: -99999px; top: 0px; border: 0px; background-color: transparent; width:1px; height:1px;"></button></br>&nbsp;
+            </form>
           </div>
         </ul>
-      </div>
-      <div>
-        </br>&nbsp;
-        <!-- <div class="message-list">
-          <ul ng-repeat="message in messageData">
-            <li>{{ message.text}}&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id)">Delete</li><hr></hr>
-          </ul>
-        </div>  
-        <div class="message-form">
-          <form>
-            <div class="form-group">
-              <input type="text" class="form-control input-lg" placeholder="Send a message..." ng-model="formData.text">
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg" ng-click="createMessage()">Enter</button></br>&nbsp;
-          </form>
-        </div> -->
-
       </div>
 
       <div id="signup_form" ng-hide="user.status">
@@ -125,7 +142,7 @@
             </div>
         </form>
       </div>
-      <form action="/login" method="post" ng-hide="user.status">
+      <form class="loginForm" action="/login" method="post" ng-hide="user.status">
           <p>Log in</p>
           <div>
               <label>Username:</label>
@@ -140,7 +157,7 @@
           </div>
       </form>
       <br/>
-      <div>
+      <div class="credits">
         <p style="text-align: right; font-size: 10px;" class="lead">Author: Michael Swanson</p>
       </div>
     <!-- <input class="btn btn-primary btn-lg" type="submit" value="FB Log in" ng-click="fBAuthenticate()"/> -->

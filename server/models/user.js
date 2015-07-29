@@ -26,7 +26,6 @@ var User = Bookshelf.Model.extend({
         }
     },
 
-
     
 }, {
     getByUsername: function(username, callback){

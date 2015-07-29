@@ -1,9 +1,10 @@
-angular.module('nodeChat',[])
+var nodeChat = angular.module('nodeChat',[])
 
 .controller('mainController', function($scope, $http, $rootScope){
 
 	$rootScope.user = {};
 	$scope.formMessageData= {};
+	$scope.otherUsers= {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
 	$scope.userData = {};
@@ -26,6 +27,16 @@ angular.module('nodeChat',[])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
+
+	function getChatUsers(chatID){
+		$http.get('chatUsers/' + chatID)
+			.success(function(data){
+				console.log('Other Users', data);
+			})
+			.error(function(err){
+				console.log('Other Users Retrieval Error', err);
+			});
+	}
 
 	function getUserInfo(userID){
 		$http.get('users/' + userID)
@@ -60,7 +71,12 @@ angular.module('nodeChat',[])
 	function getChats(){
 		$http.get('chats')
 			.success(function(data){
+				console.log('Chats Data:', data.data);
 				$scope.chatsData = data.data.chats;
+				angular.forEach(data.data.chats, function(chat, key){
+					console.log('Chat:', chat.id);
+					getChatUsers(chat.id);
+				});
 			})
 			.error(function(error){
 				console.log('Chat retrieval ERROR', error);
@@ -73,6 +89,7 @@ angular.module('nodeChat',[])
 			.success(function(data){
 				$scope.chatsData = data.data.chats;
 				console.log('chatsData: ', $scope.chatsData);
+				$scope.chatCreateData.username = null;
 			})
 			.error(function(error){
 				console.log('Create Chat ERROR', error);
@@ -91,6 +108,8 @@ angular.module('nodeChat',[])
         		chat.messages.push(data.data.message);
         	}
         });
+        //clear input values
+        $scope.formMessageData[data.data.message.chat_id].text = null;
 	    })
 	    .error(function(error) {
         console.log('Error: ', error);
