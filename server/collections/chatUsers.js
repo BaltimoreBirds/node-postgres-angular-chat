@@ -11,7 +11,7 @@ var ChatUsers = Bookshelf.Collection.extend({
   // }
 
 }, {
-	  
+  
 });
 
 module.exports = ChatUsers;

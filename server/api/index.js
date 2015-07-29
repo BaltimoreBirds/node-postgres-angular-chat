@@ -24,6 +24,7 @@ var Messages = require('../collections/messages');
 var User = require('../models/user');
 var Chat = require('../models/chat');
 var ChatUser = require('../models/chatUser');
+var ChatUsers = require('../collections/chatUsers');
 var Chats = require('../collections/chats');
 
 
