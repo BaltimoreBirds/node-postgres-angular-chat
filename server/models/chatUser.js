@@ -24,9 +24,9 @@ var ChatUser = Bookshelf.Model.extend({
         ChatUser.forge({'chat_id': chatID}).fetch()
           .then(function(chatUsersCollection){
             console.log('Collection: ', chatUsersCollection);
-            for(chatUser in chatUsersCollection){
-              console.log('Value:', chatUser);
-            }
+            // for(chatUser in chatUsersCollection){
+            //   console.log('Value:', chatUser);
+            // }
             // res.json({error: false, otherUser: otherUser});
           })
           .catch(function(err){

@@ -48,6 +48,23 @@
         border: 1px solid black; margin: 5px;
         height: 300px;
         overflow: scroll;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      .messagesBox ul{
+        background-color: white;
+        border-radius: 6px;
+        margin: 2px 1px;
+      }
+      button.message-send{
+        position: absolute; 
+        left: -99999px; 
+        top: 0px; 
+        border: 0px; 
+        background-color: 
+        transparent; 
+        width:1px; 
+        height:1px;
       }
       @media(max-width: 400px){
        .loginForm{
@@ -121,7 +138,7 @@
               <div class="form-group">
                 <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} form-control input-lg" placeholder="Send a message..." ng-model="formMessageData[chat.id].text">
               </div>
-              <button type="submit" class="btn btn-primary btn-sm" style="position: absolute; left: -99999px; top: 0px; border: 0px; background-color: transparent; width:1px; height:1px;"></button></br>&nbsp;
+              <button class="message-send" type="submit" class="btn btn-primary btn-sm" style=""></button>
             </form>
           </div>
         </ul>
