@@ -158,22 +158,25 @@ router.get('/logout', function(req, res){
 router.route('/chats')
   .get(function(req, res){
     var currentUser = req.session.passport.user;
-    User.forge({'id': currentUser}).fetch({
-          withRelated: ['chats']
-        }).then(function(user){
-          var chatCollection = user.related('chats');
-          chatCollection.fetch({
-            withRelated: ['messages']
-            }).then(function(collection){
-              res.json({error: false, data: {chats: collection}});
-            })
-            .catch(function(err){
-              res.status(500).json({error: true, data: {message: err.message}});
-            });
-        })
-        .catch(function(err){
-          res.status(500).json({error: true, data: {message: err.message}});
-        });
+    // Refactor this block - - Identical block below
+    User.forge({'id': currentUser})
+      .fetch({
+        withRelated: ['chats']
+      }).then(function(user){
+        var chatCollection = user.related('chats');
+        chatCollection.fetch({
+          withRelated: ['messages']
+          }).then(function(collection){
+            res.json({error: false, data: {chats: collection}});
+          })
+          .catch(function(err){
+            res.status(500).json({error: true, data: {message: err.message}});
+          });
+      })
+      .catch(function(err){
+        res.status(500).json({error: true, data: {message: err.message}});
+      });
+      // Refactor this block - - Identical block below
   })
   .post(function(req, res){
     User.getByUsername(req.body.username, function(err, user){
@@ -185,6 +188,7 @@ router.route('/chats')
       var currentUser = req.session.passport.user;
       console.log('Creating Chat...');
       Chat.createChat(currentUser, user.id, function(err, chat){
+        // Refactor this block - - Identical block above
         User.forge({'id': currentUser})
           .fetch({
             withRelated: ['chats']
@@ -202,6 +206,7 @@ router.route('/chats')
           .catch(function(err){
             res.status(500).json({error: true, data: {message: err.message}});
           });
+          // Refactor this block - - Identical block above
       });
 
     });
