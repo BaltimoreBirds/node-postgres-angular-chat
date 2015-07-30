@@ -9,6 +9,8 @@ var knex = require('knex')({
   }
 });
 var Bookshelf = require('bookshelf')(knex);
+//Registry plugin to register models centrally and make them
+//usable as strings to avoid dependency issues
 Bookshelf.plugin('registry');
 
 module.exports = Bookshelf;

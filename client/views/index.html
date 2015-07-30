@@ -126,7 +126,8 @@
         </br>&nbsp;
         <ul ng-repeat="chat in chatsData" style="border: 1px solid black;">
           <div class="chatTitle">
-            {{returnOtherChatUsers(chat.id)}}
+            <!-- Returns both Users, Hides Current User -->
+            <p>&nbsp;  <span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span></p>
           </div>
           <div class="messagesBox" style="">
             <ul ng-repeat="message in chat.messages" style="padding: 5px; 0 0 5px;">

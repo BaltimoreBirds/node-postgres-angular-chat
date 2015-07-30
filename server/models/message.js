@@ -7,12 +7,13 @@ var Message = Bookshelf.Model.extend({
   hasTimestamps: true,
 
   user: function(){
-    return this.belongsTo(User);
+    return this.belongsTo('User');
   },
   chat: function(){
-  	return this.belongsTo(Chat)
+  	return this.belongsTo('Chat')
   }
 
 });
+
 
 module.exports = Message;

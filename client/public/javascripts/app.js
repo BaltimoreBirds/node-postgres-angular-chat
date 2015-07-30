@@ -4,7 +4,7 @@ angular.module('nodeChat',[])
 
 	$rootScope.user = {};
 	$scope.formMessageData= {};
-	$scope.otherUsers= {};
+	$scope.chatUsers = {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
 	$scope.userData = {};
@@ -32,7 +32,8 @@ angular.module('nodeChat',[])
 	function getChatUsers(chatID){
 		$http.get('chatUsers/' + chatID)
 			.success(function(data){
-				console.log('Other Users', data.data);
+				$scope.chatUsers[data.data.id] = data.data.users;
+				console.log('Chat Users', $scope.chatUsers);
 			})
 			.error(function(err){
 				console.log('Other Users Retrieval Error', err);
