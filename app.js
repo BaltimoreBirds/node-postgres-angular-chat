@@ -10,12 +10,14 @@ var migrate       = require('migrate');
 var flash         = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var User          = require('./server/models/user');
+var app           = express();
+var http          = require('http');
+var server        = http.createServer(app);
+var io = require('socket.io')(server);
 
 var routes = require('./server/api/index');
 var users = require('./server/routes/users');
 
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname,'client', 'views'));
@@ -46,6 +48,13 @@ app.use(function(req, res, next){
     res.locals.error_messages = req.flash('error_messages');
     next();
 });
+
+// io.on('connection', function (socket) {
+//   socket.emit('news', { hello: 'world' });
+//   socket.on('my other event', function (data) {
+//     console.log(data);
+//   });
+// });
 
 passport.serializeUser(function(user, done) {
   console.log('serializeUser called');

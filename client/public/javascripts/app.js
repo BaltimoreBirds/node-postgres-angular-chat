@@ -1,4 +1,4 @@
-angular.module('nodeChat',[])
+var chatApp = angular.module('nodeChat',[])
 
 .controller('mainController', function($scope, $http, $rootScope){
 
@@ -27,7 +27,7 @@ angular.module('nodeChat',[])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
-
+	
 
 	function getChatUsers(chatID){
 		$http.get('chatUsers/' + chatID)
