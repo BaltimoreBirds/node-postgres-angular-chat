@@ -35,7 +35,7 @@ var Chat = Bookshelf.Model.extend({
         .fetch({
           withRelated: ['users']
         }).then( function(chat){
-          console.log('WE HERE CHAT:',chat);
+          // console.log('WE HERE CHAT:',chat);
           callback(null, chat);
         })
         .catch(function(err){

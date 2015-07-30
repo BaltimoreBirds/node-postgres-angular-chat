@@ -1,6 +1,38 @@
 var chatApp = angular.module('nodeChat',[])
-
-.controller('mainController', function($scope, $http, $rootScope){
+.factory('socket', ['$rootScope', function ($rootScope) {
+    var socket = io.connect();
+    console.log("socket created");
+ 
+    return {
+        on: function (eventName, callback) {
+            function wrapper() {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(socket, args);
+                });
+            }
+ 
+            socket.on(eventName, wrapper);
+ 
+            return function () {
+                socket.removeListener(eventName, wrapper);
+            };
+        },
+ 
+        emit: function (eventName, data, callback) {
+            socket.emit(eventName, data, function () {
+            	console.log('----EMITTING----');
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if(callback) {
+                        callback.apply(socket, args);
+                    }
+                });
+            });
+        }
+    };
+}])
+.controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
 	$scope.formMessageData= {};
@@ -10,6 +42,9 @@ var chatApp = angular.module('nodeChat',[])
 	$scope.userData = {};
 	$scope.loginData = {};
 	$scope.chatCreateData = {};
+	$scope.sendWithSocket = function(msg){
+    socket.emit("something", msg);
+  }
 
 	$scope.$watch('chatsData', function(newChats, oldChats) {
 	  //update the DOM with newValue
@@ -112,6 +147,7 @@ var chatApp = angular.module('nodeChat',[])
         });
         //clear input values
         $scope.formMessageData[data.data.message.chat_id].text = null;
+        $scope.sendWithSocket('SOCKET TO ME');
 	    })
 	    .error(function(error) {
         console.log('Error: ', error);

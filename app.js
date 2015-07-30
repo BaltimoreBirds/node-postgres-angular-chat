@@ -12,8 +12,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var User          = require('./server/models/user');
 var app           = express();
 var http          = require('http');
-var server        = http.createServer(app);
-var io = require('socket.io')(server);
+var server        = http.createServer(app).listen(3000);
+var io            = require('socket.io')(server);
 
 var routes = require('./server/api/index');
 var users = require('./server/routes/users');
@@ -30,11 +30,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, './client', 'public')));
 app.use(cookieParser());
+
 app.use(session({ 
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
+  secret: 'express chat',
+  resave: true,
+  saveUninitialized: true, 
+  // store: sessionStore
  }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -49,12 +52,15 @@ app.use(function(req, res, next){
     next();
 });
 
-// io.on('connection', function (socket) {
-//   socket.emit('news', { hello: 'world' });
-//   socket.on('my other event', function (data) {
-//     console.log(data);
-//   });
-// });
+// io.use(sharedsession(session));
+io.on('connection', function(socket){
+    console.log("connected");
+    socket.emit("greetings", {msg:"hello"});
+    socket.on("something", function(data){
+      console.log('Socket', this.handshake);
+      console.log("client["+this+"] sent data: " + data);
+    })
+});
 
 passport.serializeUser(function(user, done) {
   console.log('serializeUser called');
