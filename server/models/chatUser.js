@@ -19,24 +19,10 @@ var ChatUser = Bookshelf.Model.extend({
     }
     
 }, {
-    //Trying to return a collection of the users in the chat with chatID
-    getChatUsers: function(chatID, callback){
-      console.log(chatID);
-      ChatUser.forge({'chat_id': chatID}).fetch()
-        .then(function(chatUsersCollection){
-          console.log('Collection: ', chatUsersCollection);
-          // for(chatUser in chatUsersCollection){
-          //   console.log('Value:', chatUser);
-          // }
-          // res.json({error: false, otherUser: otherUser});
-        })
-        .catch(function(err){
-          callback(err, null)
-        });
-    }   
+
 
 });
-
+Bookshelf.model('ChatUser', ChatUser);
 
 var ChatsUsers = Bookshelf.Collection.extend({
 

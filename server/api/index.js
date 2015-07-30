@@ -315,9 +315,15 @@ router.route('/messages/:id')
 router.route('/chatUsers/:id')
   .get(function(req, res){
     console.log('CHATID: ', req.params.id);
-    ChatUser.getChatUsers(req.params.id, function(err, collection){
-      console.log('HO BOY!');
+    Chat.getChatUsers(req.params.id, function(err, chatUsers){
+      if(err != null){
+        console.log('ERROR NOT NULL');
+        res.status(500).json({error: true, data: {message: err.message}});
+        return;
+      }
+      console.log(chatUsers);
+      res.json({error: null, data: chatUsers});
     });
-  })
+  });
 
 module.exports = router;

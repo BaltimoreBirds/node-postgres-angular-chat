@@ -51,13 +51,6 @@ var Schema = {
     created_at: {type: 'timestamp', maxlength: 150, nullable: false},
     updated_at: {type: 'timestamp', maxlength: 150, nullable: false} 
   },
-  // chats_messages:{
-  //   id: {type: 'increments', nullable: false, primary: true},
-  //   chat_id: {type: 'integer', nullable: false, unsigned: true},
-  //   message_id: {type: 'integer', nullable: false, unsigned: true},
-  //   created_at: {type: 'timestamp', maxlength: 150, nullable: false},
-  //   updated_at: {type: 'timestamp', maxlength: 150, nullable: false}    
-  // },
   //Join table for chats and users many to many 
   chats_users: {
     id: {type: 'increments', nullable: false, primary: true},

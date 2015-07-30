@@ -1,5 +1,6 @@
 var Bookshelf = require('../models/bookshelf');
 var ChatUser = require('../models/chatUser');
+var Chat = require('../models/chat');
 // var Message = require('../models/message');
 
 var ChatUsers = Bookshelf.Collection.extend({
@@ -11,7 +12,7 @@ var ChatUsers = Bookshelf.Collection.extend({
   // }
 
 }, {
-  
+         
 });
 
 module.exports = ChatUsers;

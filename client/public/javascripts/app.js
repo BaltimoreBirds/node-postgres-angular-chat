@@ -32,7 +32,7 @@ angular.module('nodeChat',[])
 	function getChatUsers(chatID){
 		$http.get('chatUsers/' + chatID)
 			.success(function(data){
-				console.log('Other Users', data);
+				console.log('Other Users', data.data);
 			})
 			.error(function(err){
 				console.log('Other Users Retrieval Error', err);

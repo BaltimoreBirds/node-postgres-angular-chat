@@ -2,6 +2,7 @@ var Bookshelf = require('./bookshelf');
 var Promise = require('bluebird');
 var Message = require('./message');
 var ChatUser = require('./chatUser');
+var User = require('./user');
 
 //Only uses Bookshelf in data structures
 
@@ -12,7 +13,7 @@ var Chat = Bookshelf.Model.extend({
     hasTimestamps: true,
 
     users: function(){
-        return this.belongsToMany(User).through(ChatUser);
+        return this.belongsToMany('User').through('ChatUser');
     },
     messages: function(){
         return this.hasMany(Message);
@@ -26,9 +27,23 @@ var Chat = Bookshelf.Model.extend({
             });
             callback(null, chat);
         });
-    }
+    },
+    //Trying to return a collection of the users in the chat with chatID
+    getChatUsers: function(chatID, callback){
+      console.log('getChatUsers', chatID);
+      Chat.forge({'id': chatID})
+        .fetch({
+          withRelated: ['users']
+        }).then( function(chat){
+          console.log('WE HERE CHAT:',chat);
+          callback(null, chat);
+        })
+        .catch(function(err){
+          callback(err, null);
+        });
+    },
 });
-
+Bookshelf.model('Chat', Chat);
 
 var Chats = Bookshelf.Collection.extend({
 

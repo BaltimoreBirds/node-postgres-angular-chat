@@ -12,7 +12,7 @@ var User = Bookshelf.Model.extend({
     hasTimestamps: true,
 
     chats: function(){
-        return this.belongsToMany(Chat).through(ChatUser);
+        return this.belongsToMany('Chat').through('ChatUser');
     },
     messages: function(){
         return this.hasMany(Message);
@@ -29,19 +29,18 @@ var User = Bookshelf.Model.extend({
     
 }, {
     getByUsername: function(username, callback){
-        User.forge({'username': username}).fetch()
-            .then( function(user){
-                console.log('getByUsername SUCCESS');
-                callback(null, user);
-            })
-            .catch(function(err){
-                console.log('getByUsername CATCH ERROR');
-                callback(err, null);
-            });
-        
+      User.forge({'username': username}).fetch()
+        .then( function(user){
+            console.log('getByUsername SUCCESS');
+            callback(null, user);
+        })
+        .catch(function(err){
+            console.log('getByUsername CATCH ERROR');
+            callback(err, null);
+        });        
     }
 });
-
+Bookshelf.model('User', User);
 
 var Users = Bookshelf.Collection.extend({
 
