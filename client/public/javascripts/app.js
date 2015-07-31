@@ -35,17 +35,14 @@ var chatApp = angular.module('nodeChat',[])
 .controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
-	$scope.formMessageData= {};
+	$scope.newMessageData= {};
 	$scope.chatUsers = {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
 	$scope.userData = {};
 	$scope.loginData = {};
 	$scope.chatCreateData = {};
-	$scope.sendWithSocket = function(msg){
-    socket.emit("something", msg);
-  }
-
+	$scope.newMessageSocketData = {};
 	$scope.$watch('chatsData', function(newChats, oldChats) {
 	  //update the DOM with newValue
 	});
@@ -62,7 +59,17 @@ var chatApp = angular.module('nodeChat',[])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
-	
+
+
+	socket.on("messageSent", function(data){
+		console.log('Messages associated ID:', data);
+		angular.forEach($scope.chatsData, function(chat, key){
+        	if(chat.id == data.chat_id){
+        		console.log('Chat object:', chat);
+        		chat.messages.push(data);
+        	}
+        });
+	});
 
 	function getChatUsers(chatID){
 		$http.get('chatUsers/' + chatID)
@@ -134,20 +141,19 @@ var chatApp = angular.module('nodeChat',[])
 	}
 
 	// Create a new message
-	$scope.createMessage = function(chatID) {
-		$scope.formMessageData.chatID = chatID;
-		$http.post('messages', $scope.formMessageData)
+	$scope.sendMsgSocket = function(chatID, msg){
+		// $scope.createMessage(chatID);
+		$scope.newMessageSocketData['chatID'] = chatID;
+		$scope.newMessageSocketData['msg'] = msg;
+    socket.emit("messageSend", $scope.newMessageSocketData);
+  }
+
+	$scope.createMessage = function(chatID, msg) {
+		$scope.newMessageData.chatID = chatID;
+		$http.post('messages', $scope.newMessageData)
 	    .success(function(data) {
-        angular.forEach($scope.chatsData, function(chat, key){
-        	console.log('MEssages associated ID:', data.data.message.chat_id)
-        	if(chat.id == data.data.message.chat_id){
-        		console.log('Chat object:', chat);
-        		chat.messages.push(data.data.message);
-        	}
-        });
         //clear input values
-        $scope.formMessageData[data.data.message.chat_id].text = null;
-        $scope.sendWithSocket('SOCKET TO ME');
+        $scope.newMessageData[data.data.message.chat_id].text = null;
 	    })
 	    .error(function(error) {
         console.log('Error: ', error);

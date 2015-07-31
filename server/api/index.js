@@ -1,23 +1,21 @@
-var _ = require('lodash');
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var path = require('path');
-var cors = require('cors');
+var _              = require('lodash');
+var express       = require('express');
+var app           = express();
+var bodyParser    = require('body-parser');
+var path          = require('path');
+var cors          = require('cors');
 // application routing
-var router = express.Router();
+var router        = express.Router();
 // body-parser middleware for handling request variables
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json()); 
-var passport = require('passport');
+var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
 app.use(passport.session());
-
-var corsOptions = {
-    origin: 'http://localhost:3000'
-};
-
+var corsOptions   = {origin: 'http://localhost:3000'};
+// var http          = require('http');
+// var server        = http.createServer(app);
+// var io            = require('socket.io')(server);
 
 //Models and Collections
 var Message = require('../models/message');
@@ -28,6 +26,7 @@ var ChatUser = require('../models/chatUser');
 var ChatUsers = require('../collections/chatUsers');
 var Chats = require('../collections/chats');
 
+var io = require('../../app.js').sio;
 
 router.route('/')
     .get(function(req, res){
@@ -247,7 +246,8 @@ router.route('/messages')
     Message.forge({user_id: deserializedUser, chat_id: req.body.chatID, text: req.body[req.body.chatID].text})
     .save()
     .then(function(message){
-      res.json({error: false, data: {message: message}});
+      io.emit('messageSent', message);
+      res.json({error: false, data: {message: message}});    
     })
     .catch(function(err){
       res.status(500).json({error: true, data: {message: err.message}});

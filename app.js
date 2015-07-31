@@ -15,6 +15,8 @@ var http          = require('http');
 var server        = http.createServer(app).listen(3000);
 var io            = require('socket.io')(server);
 
+module.exports.sio = io;
+
 var routes = require('./server/api/index');
 var users = require('./server/routes/users');
 
@@ -52,14 +54,9 @@ app.use(function(req, res, next){
     next();
 });
 
-// io.use(sharedsession(session));
-io.on('connection', function(socket){
-    console.log("connected");
-    socket.emit("greetings", {msg:"hello"});
-    socket.on("something", function(data){
-      console.log('Socket', this.handshake);
-      console.log("client["+this+"] sent data: " + data);
-    })
+app.use(function(req, res, next) {
+    req.io = io;
+    next();
 });
 
 passport.serializeUser(function(user, done) {
