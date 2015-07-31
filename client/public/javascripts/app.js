@@ -35,7 +35,9 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 .controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
-	$scope.newMessageData= {};
+	$scope.actions = {};
+	$scope.actions['typing'] = {};
+	$scope.newMessageData = {};
 	$scope.chatUsers = {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
@@ -59,7 +61,14 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 	// 	.error(function(error){
 	// 		console.log('Error ', error);
 	// 	});
-
+	
+	socket.on("typed", function(data){
+		var chatID = Object.keys(data.typing);
+		// console.log("data?", data.typing[chatID]);
+		// console.log("scope", $scope.actions.typing[chatID])
+		$scope.actions.typing[chatID] = data.typing[chatID];
+		console.log($scope.actions.typing[chatID]);
+	});
 
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);
@@ -140,14 +149,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 			});
 	}
 
-	// Create a new message
-	$scope.sendMsgSocket = function(chatID, msg){
-		// $scope.createMessage(chatID);
-		$scope.newMessageSocketData['chatID'] = chatID;
-		$scope.newMessageSocketData['msg'] = msg;
-    socket.emit("messageSend", $scope.newMessageSocketData);
-  }
-
 	$scope.createMessage = function(chatID, msg) {
 		$scope.newMessageData.chatID = chatID;
 		$http.post('messages', $scope.newMessageData)
@@ -195,6 +196,25 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 			.error(function(error){
 				console.log('Error logging out:', error);
 			});
+	}
+
+	var myTimer = undefined;
+	var delayTime = 1500;
+
+	function typingCheck(chatID){
+		$scope.actions['typing'][chatID] = false;
+		socket.emit("typing", $scope.actions);	
+	}
+	$scope.typing = function(chatID){
+		//Send Typing Socket
+		$scope.actions['typing'][chatID] = true;
+		socket.emit("typing", $scope.actions);	
+		if (myTimer) {
+        clearTimeout(myTimer);
+    }
+    myTimer = setTimeout(function(){
+    	typingCheck(chatID);
+    }, 1200);    
 	}
 
 	// $scope.fBAuthenticate = function(userID) {

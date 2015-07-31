@@ -28,6 +28,13 @@ var Chats = require('../collections/chats');
 
 var io = require('../../app.js').sio;
 
+io.on("connection", function(socket){
+  socket.on("typing", function(data){
+    console.log("typing", data);
+    socket.emit("typed", data);
+  });
+});
+
 router.route('/')
     .get(function(req, res){
         res.sendFile(path.join(__dirname,'../','../','client', 'views','index.html'));

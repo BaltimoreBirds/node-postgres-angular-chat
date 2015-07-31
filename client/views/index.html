@@ -127,7 +127,7 @@
         <ul ng-repeat="chat in chatsData" style="border: 1px solid black;">
           <div class="chatTitle">
             <!-- Returns both Users, Hides Current User -->
-            <p>&nbsp;  <span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span></p>
+            <p>&nbsp;  <span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i></p>
           </div>
           <div class="messagesBox" scroll-glue style="">
             <ul ng-repeat="message in chat.messages" style="padding: 5px; 0 0 5px;">
@@ -137,7 +137,7 @@
           <div class="message-form" style="margin: 5px;">
             <form ng-submit="createMessage(chat.id, newMessageData[chat.id].text)">
               <div class="form-group">
-                <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} form-control input-lg" placeholder="Send a message..." ng-model="newMessageData[chat.id].text">
+                <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} messageInput form-control input-lg" placeholder="Send a message..." ng-keypress="typing(chat.id)" ng-model="newMessageData[chat.id].text">
               </div>
               <button class="message-send" type="submit" class="btn btn-primary btn-sm" style=""></button>
             </form>
