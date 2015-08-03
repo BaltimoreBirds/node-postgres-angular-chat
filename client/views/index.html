@@ -129,7 +129,7 @@
             <!-- Returns both Users, Hides Current User -->
             <p>&nbsp;  <span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i></p>
           </div>
-          <div class="messagesBox" scroll-glue style="">
+          <div class="messagesBox" scroll-glue >
             <ul ng-repeat="message in chat.messages" style="padding: 5px; 0 0 5px;">
               <li>{{ message.text }}</li>
             </ul>

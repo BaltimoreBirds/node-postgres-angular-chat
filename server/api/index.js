@@ -30,8 +30,7 @@ var io = require('../../app.js').sio;
 
 io.on("connection", function(socket){
   socket.on("typing", function(data){
-    console.log("typing", data);
-    socket.emit("typed", data);
+    io.emit("typed", data);
   });
 });
 

@@ -64,10 +64,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 	
 	socket.on("typed", function(data){
 		var chatID = Object.keys(data.typing);
-		// console.log("data?", data.typing[chatID]);
-		// console.log("scope", $scope.actions.typing[chatID])
 		$scope.actions.typing[chatID] = data.typing[chatID];
-		console.log($scope.actions.typing[chatID]);
 	});
 
 	socket.on("messageSent", function(data){
@@ -150,6 +147,9 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 	}
 
 	$scope.createMessage = function(chatID, msg) {
+		//Kill typing events.
+		$scope.actions['typing'][chatID] = false;
+		socket.emit("typing", $scope.actions);	
 		$scope.newMessageData.chatID = chatID;
 		$http.post('messages', $scope.newMessageData)
 	    .success(function(data) {
@@ -214,7 +214,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
     }
     myTimer = setTimeout(function(){
     	typingCheck(chatID);
-    }, 1200);    
+    }, 1500);    
 	}
 
 	// $scope.fBAuthenticate = function(userID) {
