@@ -31,6 +31,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, './client', 'public')));
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 app.use(cookieParser());
 
 app.use(session({ 
