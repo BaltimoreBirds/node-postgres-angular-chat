@@ -21,6 +21,7 @@ var corsOptions   = {origin: 'http://localhost:3000'};
 var Message = require('../models/message');
 var Messages = require('../collections/messages');
 var User = require('../models/user');
+var Users = require('../collections/users');
 var Chat = require('../models/chat');
 var ChatUser = require('../models/chatUser');
 var ChatUsers = require('../collections/chatUsers');
@@ -33,9 +34,12 @@ io.on("connection", function(socket){
     io.emit("typed", data);
   });
   socket.on("messageDelete", function(data){
-    console.log("Deleted: ", data)
+    // console.log("Deleted: ", data)
     io.emit("messageDeleted", data);
   });
+  socket.on("createChat", function(data){
+    io.emit("chatCreated", data);
+  })
 });
 
 router.route('/')

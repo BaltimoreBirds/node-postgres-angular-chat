@@ -1,4 +1,4 @@
-var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree'])
+var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'mgcrea.ngStrap'])
 .factory('socket', ['$rootScope', function ($rootScope) {
     var socket = io.connect();
     console.log("socket created");
@@ -35,6 +35,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree'])
 .controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
+	$scope.users = ["mswanson", "garfield", "stripes"];
 	$scope.actions = {};
 	$scope.actions['typing'] = {};
 	$rootScope.alert = {}
@@ -70,6 +71,10 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree'])
 		$scope.actions.typing[chatID] = data.typing[chatID];
 	});
 
+	socket.on("chatCreated", function(data){
+		getChats();
+	})
+
 	socket.on("messageDeleted", function(data){
 		angular.forEach($scope.chatsData, function(chat, key){
     	if(chat.id == data.chatID){
@@ -94,6 +99,22 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree'])
 			return 'foreignUser'
 		}
 	}
+
+	// function getUsers(){
+	// 	return $http.get('users')
+	// 		.success(function(data){
+	// 			var array = [];
+	// 			angular.forEach(data.data, function(user, key){
+	// 	    	array.push(user.username);
+	// 	    });
+	// 	    console.log(array);
+	// 	    return array;
+	// 			// console.log("Users", $scope.users);
+	// 		})
+	// 		.error(function(err){
+	// 			console.log('Get Users', err);
+	// 		});
+	// }
 
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);
@@ -165,9 +186,9 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree'])
 	$scope.createChat = function(userID) {
 		$http.post('chats', $scope.chatCreateData)
 			.success(function(data){
-				$scope.chatsData = data.data.chats;
-				console.log('chatsData: ', $scope.chatsData);
-				$scope.chatCreateData.username = null;
+				socket.emit("createChat", $scope.chatCreateData);
+				// $scope.chatsData = data.data.chats;
+					$scope.chatCreateData.username = null;
 			})
 			.error(function(error){
 				console.log('Create Chat ERROR', error);

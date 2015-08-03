@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-ui-tree": "~2.7.0"
+    "angular-ui-tree": "~2.7.0",
+    "angular-strap": "~2.3.1"
   }
 }
