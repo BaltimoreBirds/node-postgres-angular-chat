@@ -37,7 +37,10 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 	$rootScope.user = {};
 	$scope.actions = {};
 	$scope.actions['typing'] = {};
+	$rootScope.alert = {}
+	$rootScope.alert.messageDelete = false;
 	$scope.newMessageData = {};
+	$scope.deletedMessage = {};
 	$scope.chatUsers = {};
 	$scope.messageData = {};
 	$scope.chatsData = [];
@@ -67,14 +70,39 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
 		$scope.actions.typing[chatID] = data.typing[chatID];
 	});
 
+	socket.on("messageDeleted", function(data){
+		angular.forEach($scope.chatsData, function(chat, key){
+    	if(chat.id == data.chatID){
+				angular.forEach(chat.messages, function(message, key){
+        	if(message.id == data.messageID){
+        		chat.messages.splice(key, 1);
+        	}
+        });
+    	}
+    });
+    $rootScope.alert.messageDelete = true;
+		setTimeout(function(){
+			$rootScope.alert.messageDelete = false;
+			$rootScope.$apply();
+		}, 1500);
+	});
+
+	$scope.isMe = function(userID){
+		if(userID == $rootScope.user.id){
+			return 'user'
+		}else{
+			return 'foreignUser'
+		}
+	}
+
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);
 		angular.forEach($scope.chatsData, function(chat, key){
-        	if(chat.id == data.chat_id){
-        		console.log('Chat object:', chat);
-        		chat.messages.push(data);
-        	}
-        });
+    	if(chat.id == data.chat_id){
+    		console.log('Chat object:', chat);
+    		chat.messages.push(data);
+    	}
+    });
 	});
 
 	function getChatUsers(chatID){
@@ -162,9 +190,12 @@ var chatApp = angular.module('nodeChat',['luegg.directives'])
     };
 
 	// Delete a message
-	$scope.deleteMessage = function(messageID) {
+	$scope.deleteMessage = function(messageID, chatID) {
 		$http.delete('messages/' + messageID)
 	    .success(function(data) {
+	    	$scope.deletedMessage.messageID = messageID;
+	    	$scope.deletedMessage.chatID = chatID;
+	    	socket.emit("messageDelete", $scope.deletedMessage);
         $scope.messageData = data.data.collection;
         console.log('Deleted data', data.data.collection);
 	    })

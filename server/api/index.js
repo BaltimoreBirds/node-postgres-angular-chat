@@ -32,6 +32,10 @@ io.on("connection", function(socket){
   socket.on("typing", function(data){
     io.emit("typed", data);
   });
+  socket.on("messageDelete", function(data){
+    console.log("Deleted: ", data)
+    io.emit("messageDeleted", data);
+  });
 });
 
 router.route('/')

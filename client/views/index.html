@@ -10,9 +10,10 @@
         font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
       }
       a {
-        color: #00B7FF;
+        color: #337ab7;
+        line-height: 30px;
       }
-      ul {
+      div.ul {
         list-style-type: none;
         padding-left: 0px;
       }
@@ -44,6 +45,19 @@
         width: 100%; 
         float: left;
       }
+      #chatCreateForm{
+        max-width: 400px; 
+        border: 1px solid black;
+      }
+      #chatCreateForm input{
+        display: inline;
+        width: 66%;
+      }
+      #chatCreateForm button{
+        display: inline;
+        float: right;
+        margin-right: 10px;
+      }
       .messagesBox{
         border: 1px solid black; margin: 5px;
         height: 300px;
@@ -51,10 +65,37 @@
         border: 1px solid #ccc;
         border-radius: 6px;
       }
-      .messagesBox ul{
+      .messagesBox div.ul{
         background-color: white;
-        border-radius: 6px;
-        margin: 2px 1px;
+        margin: 0px 0px;
+        padding: 8px 8px 8px 8px;
+      }
+      .messagesBox div.ul.user{
+        background-color: white;
+      }
+      .messagesBox div.ul.foreignUser{
+        background-color: #337ab7;
+        border-color: #2e6da4;
+        color: white;
+      }
+      .messagesBox div.ul div.li{
+
+      }
+      .deleteBox{
+        float: right;
+        color: #cccccc;
+        font-weight: 100;
+        font-size: 9px;
+        text-transform: lowercase;
+        font-style: italic;
+      }
+      .deleteAlert{
+        color: red;
+        font-style: italic;
+        text-align: center;
+      }
+      .hide{
+        display: none;
       }
       button.message-send{
         position: absolute; 
@@ -115,34 +156,37 @@
         <hr>
       </div>
       </br>
-      <form style="max-width: 400px; border: 1px solid black;" ng-show="user.status">
+      <form id="chatCreateForm" ng-show="user.status">
         &nbsp;
         <p>&nbsp;Start a new chat</p>
-        <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username"><br>&nbsp;
+        <input type="text" class="form-control input-lg" placeholder="Enter Username..." ng-model="chatCreateData.username">
         <button class="btn btn-primary btn-lg" ng-click="createChat()">New Chat</button>
         </br>&nbsp;
       </form>
-      <div class="chat-wrap" ng-show="user.status">
+      <div class="chat-wrap" ng-show="user.status" >
         </br>&nbsp;
-        <ul ng-repeat="chat in chatsData" style="border: 1px solid black;">
+        <div id="accordion" class="ul" ng-repeat="chat in chatsData" style="border: 1px solid black;" role="tablist" aria-multiselectable="true">
           <div class="chatTitle">
             <!-- Returns both Users, Hides Current User -->
-            <p>&nbsp;  <span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i></p>
+            <p>&nbsp;  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{chat.id}}" aria-expanded="true" aria-controls="collapse{{chat.id}}"><span ng-hide="user.username == chatUsers[chat.id][0].username"><strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><strong>{{chatUsers[chat.id][1].username}}</strong></span></a><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i></p>
           </div>
-          <div class="messagesBox" scroll-glue >
-            <ul ng-repeat="message in chat.messages" style="padding: 5px; 0 0 5px;">
-              <li>{{ message.text }}</li>
-            </ul>
+          <div id="collapse{{chat.id}}" class="panel-collapse collapse collapse-wrap" role="tabpanel">
+            <div class="messagesBox" scroll-glue >
+              <div ng-class="isMe(message.user_id)" class="message ul" ng-repeat="message in chat.messages" >
+                <div class="li">{{ message.text }}<span ng-show="user.id == message.user_id" class="deleteBox">&nbsp;&nbsp;<input type="checkbox" ng-click="deleteMessage(message.id, chat.id)">&nbsp;Delete</span></div>
+              </div>            
+            </div>
+            <p class="deleteAlert" ng-show="alert.messageDelete">Message Deleted</p>
+            <div class="message-form" style="margin: 5px;">
+              <form ng-submit="createMessage(chat.id, newMessageData[chat.id].text)">
+                <div class="form-group">
+                  <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} messageInput form-control input-lg" placeholder="Send a message..." ng-keypress="typing(chat.id)" ng-model="newMessageData[chat.id].text">
+                </div>
+                <button class="message-send" type="submit" class="btn btn-primary btn-sm" style=""></button>
+              </form>
+            </div>
           </div>
-          <div class="message-form" style="margin: 5px;">
-            <form ng-submit="createMessage(chat.id, newMessageData[chat.id].text)">
-              <div class="form-group">
-                <input type="text" name="messageFor{{chat.id}}" class="messageforChat{{chat.id}} messageInput form-control input-lg" placeholder="Send a message..." ng-keypress="typing(chat.id)" ng-model="newMessageData[chat.id].text">
-              </div>
-              <button class="message-send" type="submit" class="btn btn-primary btn-sm" style=""></button>
-            </form>
-          </div>
-        </ul>
+        </div>
       </div>
 
       <div id="signup_form" ng-hide="user.status">
