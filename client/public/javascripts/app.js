@@ -1,4 +1,4 @@
-var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'mgcrea.ngStrap'])
+var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.bootstrap'])
 .factory('socket', ['$rootScope', function ($rootScope) {
     var socket = io.connect();
     console.log("socket created");

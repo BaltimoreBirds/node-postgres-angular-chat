@@ -4,135 +4,9 @@
     <title>ExpressChat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/stylesheets/style.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="/bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
     <style>
-      body {
-        padding: 50px;
-        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-      }
-      a {
-        color: #337ab7;
-        line-height: 30px;
-      }
-      div.ul {
-        list-style-type: none;
-        padding-left: 0px;
-      }
-      .container {
-        max-width: 800px;
-        /*background-color: #eeeeee;*/
-        border: 1px solid black;
-        border-radius: 6px;
-      }
-      .header {
-        text-align: center;
-        display: block;
-        /*content: "";*/
-      }
-      hr{
-        color: black;
-        margin: 10px 0;
-        border-top: solid 1px black;
-      }
-      .loginForm{
-        width: 47%;
-        float: left;
-        margin-left: 2%;
-      }
-      #signup_form{
-        width: 47%;
-        float: left;
-        margin-right: 2%;
-      }
-      .credits{
-        position: relative;
-        width: 100%; 
-        float: left;
-      }
-      div#accordion{
-        background-color: rgba(111, 111, 111, .05);
-        border-radius: 6px;
-        border: 1px solid black;
-      }
-      #chatCreateForm{
-        padding-top: 8px;
-        max-width: 800px; 
-        border: 1px solid black;
-        border-radius: 6px;
-      }
-      #chatCreateForm input{
-        display: inline;
-        width: 66%;
-      }
-      #chatCreateForm input + .typeahead.ng-hide { display: block !important; visibility: hidden !important; overflow: hidden; }
-      #chatCreateForm button{
-        display: inline;
-        float: right;
-        margin-right: 10px;
-      }
-      .messagesBox{
-        border: 1px solid black; margin: 5px;
-        height: 300px;
-        overflow: scroll;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
-      .messagesBox div.ul{
-        background-color: white;
-        margin: 0px 0px;
-        padding: 8px 8px 8px 8px;
-      }
-      .messagesBox div.ul.user{
-        background-color: white;
-      }
-      .messagesBox div.ul.foreignUser{
-        background-color: #337ab7;
-        border-color: #2e6da4;
-        color: white;
-      }
-      .messagesBox div.ul div.li{
-
-      }
-      .deleteBox{
-        float: right;
-        color: #cccccc;
-        font-weight: 100;
-        font-size: 9px;
-        text-transform: lowercase;
-        font-style: italic;
-      }
-      .deleteAlert{
-        color: red;
-        font-style: italic;
-        text-align: center;
-      }
-      .hide{
-        display: none;
-      }
-      button.message-send{
-        position: absolute; 
-        left: -99999px; 
-        top: 0px; 
-        border: 0px; 
-        background-color: 
-        transparent; 
-        width:1px; 
-        height:1px;
-      }
-      @media(max-width: 400px){
-       .loginForm{
-          width: 100%;
-          float: left;
-          margin-left: 2%;
-        }
-        #signup_form{
-          width: 100%;
-          float: left;
-          margin-right: 2%;
-          margin-bottom: 20px;
-
-        } 
-      }
     </style>
   </head>
   <body ng-controller="mainController">
@@ -275,8 +149,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
     <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.2/ui-bootstrap.min.js"></script>   
     <script src="javascripts/app.js"></script>
     <script type="text/javascript" src="javascripts/indexScripts.js"></script>
     <!-- //Remove ui-bootstrap? -->
