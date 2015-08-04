@@ -35,8 +35,8 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 .controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
-	$scope.users = ["mswanson", "garfield", "stripes", "gaylord"];
 	$scope.actions = {};
+	$scope.users = [];
 	$scope.actions['typing'] = {};
 	$rootScope.alert = {}
 	$rootScope.alert.messageDelete = false;
@@ -90,21 +90,22 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		}
 	}
 
-	// $scope.users = function(){
-	// 	return $http.get('users')
-	// 		.success(function(data){
-	// 			var array = [];
-	// 			angular.forEach(data.data, function(user, key){
-	// 	    	array.push(user.username);
-	// 	    });
-	// 	    console.log(array);
-	// 	    return array;
-	// 			// console.log("Users", $scope.users);
-	// 		})
-	// 		.error(function(err){
-	// 			console.log('Get Users', err);
-	// 		});
-	// }
+	$scope.active = function(status){
+		if(status == 'active'){
+			return 'active';
+		}else{
+			return 'inactive';
+		}
+	}
+
+	$http.get('users')
+		.success(function(data){
+			// console.log('users', data);
+			$scope.users = data.data;
+		})
+		.error(function(err){
+			console.log('Get Users', err);
+		});
 
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);

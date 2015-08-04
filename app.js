@@ -81,7 +81,7 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     // console.log(username);
     // var user = new User();
-    User.getByUsername( username, function(err, user) {;
+    User.getByUsername( username, function(err, user) {
       console.log('User: ', user);
       console.log('Error: ', err);
       if (err) { return done(err); }
@@ -93,9 +93,8 @@ passport.use(new LocalStrategy(
       if ( !user.validPassword( password )) {
         console.log('PASSWORD FAIL');
         return done(null, false, { message: 'Incorrect password.' });
-      }else{
-        console.log('PASSWORD MATCH!');
       }
+      user.set({status: 'active'}).save();
       return done(null, user);
     });
   }

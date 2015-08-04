@@ -6,6 +6,7 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/stylesheets/style.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="/bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <style>
     </style>
   </head>
@@ -45,8 +46,18 @@
       <form id="chatCreateForm" ng-show="user.status">
         &nbsp;
         <p style="display: inline;">&nbsp;Start a new chat</p>
-        <input type="text" class="form-control input-sm" placeholder="Enter Username..." ng-model="chatCreateData.username" typeahead="user for user in users | limitTo:4">
+        <input type="text" class="form-control input-sm" placeholder="Enter Username..." ng-model="chatCreateData.username">
         <button class="btn btn-primary btn-sm" ng-click="createChat()">New Chat</button>
+        <div id="usersAccordion" class="ul" ng-repeat="chat in chatsData" role="tablist" aria-multiselectable="true">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="true" aria-controls="collapse{{chat.id}}"><strong>Users</strong></a>
+          <div id="collapseUsers" class="panel-collapse collapse collapse-wrap">
+            <div ng-repeat="user in users">
+              <div class="user-wrap">
+                <li><i ng-class="active(user.status)" class="fa fa-circle"></i>{{user.username}} {{user.status}}</li>
+              </div>
+            </div>
+          </div>
+        </div>
         </br>&nbsp;
       </form>
       <div class="chat-wrap" ng-show="user.status" >

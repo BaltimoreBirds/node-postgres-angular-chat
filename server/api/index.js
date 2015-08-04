@@ -55,7 +55,7 @@ router.route('/users')
     .fetch()
     .then(function(collection){
       // console.log('collection: '+collection);
-      res.json({error: false, data: collection.toJSON()});
+      res.json({error: false, data: collection});
     })
     .catch(function(err){
       res.status(500).json({error: true, data:{message: err.message}})
@@ -162,7 +162,7 @@ router.post('/login',
 
 //logout 
 router.get('/logout', function(req, res){
-    console.log('Is Authenticated: ',req.isAuthenticated());
+    User.deactivate(req.session.passport.user);
     req.session.destroy()
     req.logout();
     console.log('logged out...redirecting');

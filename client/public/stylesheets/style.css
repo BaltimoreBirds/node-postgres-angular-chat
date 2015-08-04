@@ -36,6 +36,10 @@
         float: left;
         margin-right: 2%;
       }
+      .user-wrap li{
+        list-style: none;
+        padding-left: 10px;
+      }
       .credits{
         position: relative;
         width: 100%; 
@@ -51,6 +55,7 @@
         max-width: 800px; 
         border: 1px solid black;
         border-radius: 6px;
+        position: relative;
       }
       #chatCreateForm input{
         display: inline;
@@ -61,6 +66,21 @@
         display: inline;
         float: right;
         margin-right: 10px;
+      }
+      #usersAccordion{
+        margin: 0 15px;
+        float: left;
+        display: block;
+        width: 100%; 
+        position: relative;
+        left: 0;
+        top:10%;
+      }
+      #usersAccordion i.fa-circle.active{
+        color: green;
+      }
+      #usersAccordion i.fa-genderless.red{
+        color: red;
       }
       .messagesBox{
         border: 1px solid black; margin: 5px;

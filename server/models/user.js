@@ -31,14 +31,25 @@ var User = Bookshelf.Model.extend({
     getByUsername: function(username, callback){
       User.forge({'username': username}).fetch()
         .then( function(user){
-            console.log('getByUsername SUCCESS');
-            callback(null, user);
+          console.log('getByUsername SUCCESS');
+          callback(null, user);
         })
         .catch(function(err){
-            console.log('getByUsername CATCH ERROR');
-            callback(err, null);
+          console.log('getByUsername CATCH ERROR');
+          callback(err, null);
         });        
-    }
+    }, 
+    deactivate: function(userID){
+      User.forge({'id': userID}).fetch()
+        .then(function(user){
+          user.set({status: 'inactive'}).save();
+          // user.set({status: 'inactive'});
+          console.log(user);
+        })
+        .catch(function(err){
+            callback(err, null);
+        });             
+        }
 });
 Bookshelf.model('User', User);
 

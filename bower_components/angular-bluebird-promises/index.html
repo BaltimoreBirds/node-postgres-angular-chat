@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mwl.example">
+
+  <head>
+    <script src="angular-bluebird-promises.js"></script>
+    <script>
+
+      angular.module('mwl.example', ['mwl.bluebird']).run(function ($q, $http, $log) {
+
+        $q.onPossiblyUnhandledRejection(function(err) {
+          $log.warn('Unhandled rejection', err);
+        });
+
+        var promises = [
+          $http.get('node_modules/bluebird/package.json'),
+          $http.get('node_modules/angular/package.json')
+        ];
+
+        $q.all(promises).spread(function (angular, bluebird) {
+          console.info('\\m/ It worked! \\m/', angular.data.name, bluebird.data.name);
+        });
+
+      });
+
+    </script>
+  </head>
+
+</html>
