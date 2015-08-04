@@ -263,7 +263,7 @@ router.route('/messages')
     Message.forge({user_id: deserializedUser, chat_id: req.body.chatID, text: req.body[req.body.chatID].text})
     .save()
     .then(function(message){
-      io.emit('messageSent', message);
+      io.emit('messageSent', {message: message, user: deserializedUser});
       res.json({error: false, data: {message: message}});    
     })
     .catch(function(err){

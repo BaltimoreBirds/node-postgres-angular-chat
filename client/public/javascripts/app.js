@@ -90,9 +90,13 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);
 		angular.forEach($scope.chatsData, function(chat, key){
-    	if(chat.id == data.chat_id){
+    	if(chat.id == data.message.chat_id){
+    		//Add notification
+    		if($scope.user.id != data.user){
+    			$('i.msgAlert'+chat.id+'.fa-bolt').removeClass('hide');
+    		}	    		
     		console.log('Chat object:', chat);
-    		chat.messages.push(data);
+    		chat.messages.push(data.message);
     	}
     });
 	});
@@ -101,6 +105,10 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		//Update User models
 		updateUserStatus(data, 'active');
 	});
+
+	$scope.hideAlert = function(chatID){
+		$('i.msgAlert'+chatID+'.fa-bolt').addClass('hide');
+	}
 
 	function updateUserStatus(data, status){
 		//updates $scope.chatUsers
@@ -192,6 +200,8 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 				console.log('Chats Data:', data.data);
 				$scope.chatsData = data.data.chats;
 				angular.forEach(data.data.chats, function(chat, key){
+					//Remove notifications, they're defaulted on. 
+					$('i.msgAlert'+chat.id+'.fa-bolt').removeClass('hide');
 					console.log('Chat:', chat.id);
 					getChatUsers(chat.id);
 				});
