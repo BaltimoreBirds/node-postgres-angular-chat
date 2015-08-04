@@ -26,6 +26,23 @@
         display: block;
         /*content: "";*/
       }
+      .header div.spacer{
+        height: 20px;
+      }
+      .header:after{
+        display: block;
+        clear: none;
+        color: transparent;
+        line-height: 1px;
+        content: "A";
+      }
+      .header p{
+        font-size: 18px; 
+        width: 50%; 
+        float: left; 
+        text-align: left; 
+        display: inline;
+      }
       hr{
         color: black;
         margin: 10px 0;
@@ -65,11 +82,13 @@
         border-radius: 6px;
         position: relative;
       }
+      #chatCreateForm label{
+        display: inline; 
+      }
       #chatCreateForm input{
         display: inline;
         width: 66%;
-      }
-      #chatCreateForm input + .typeahead.ng-hide { display: block !important; visibility: hidden !important; overflow: hidden; }
+      }      
       #chatCreateForm button{
         display: inline;
         float: right;
@@ -148,6 +167,44 @@
         height:1px;
       }
       @media(max-width: 400px){
+        .header p{
+          font-size: 18px; 
+          width: 100%; 
+          float: left; 
+          text-align: left; 
+          display: block;
+        }
+        .header div.spacer{
+          height: 0px;
+        }
+        #chatCreateForm{
+          padding-top: 8px;
+          max-width: 800px; 
+          border: 1px solid black;
+          border-radius: 6px;
+          position: relative;
+          display: block;
+        }
+        #chatCreateForm label{
+          display: block; 
+          text-align: left;
+        }
+        #chatCreateForm input{
+          display: block;
+          width: 100%;
+        }      
+        #chatCreateForm button{
+          display: block;
+          float: none;
+          margin-top: 5px;
+          margin-right: 10px;
+        }
+        #usersAccordion .user-wrap{
+          position: relative;
+          float: left;
+          display: inline;
+          width: 50%;
+        }        
        .loginForm{
           width: 100%;
           float: left;
