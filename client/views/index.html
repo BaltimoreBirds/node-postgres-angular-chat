@@ -45,7 +45,7 @@
       <form id="chatCreateForm" ng-show="user.status">
         &nbsp;
         <p style="display: inline;">&nbsp;Start a new chat</p>
-        <input type="text" class="form-control input-sm" placeholder="Enter Username..." ng-model="chatCreateData.username" ng-options="username in users" bs-typeahead>
+        <input type="text" class="form-control input-sm" placeholder="Enter Username..." ng-model="chatCreateData.username" typeahead="user for user in users | limitTo:4">
         <button class="btn btn-primary btn-sm" ng-click="createChat()">New Chat</button>
         </br>&nbsp;
       </form>
@@ -150,6 +150,7 @@
     <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.2/ui-bootstrap.min.js"></script>   
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.6.0/ui-bootstrap-tpls.min.js"></script>       
     <script src="javascripts/app.js"></script>
     <script type="text/javascript" src="javascripts/indexScripts.js"></script>
     <!-- //Remove ui-bootstrap? -->
