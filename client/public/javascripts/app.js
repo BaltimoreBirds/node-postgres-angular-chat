@@ -36,7 +36,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	$rootScope.user = {};
 	$scope.actions = {};
-	$scope.users = [];
+	$scope.users = getUsers();
 	$scope.actions['typing'] = {};
 	$rootScope.alert = {}
 	$rootScope.alert.messageDelete = false;
@@ -82,6 +82,10 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		}, 1500);
 	});
 
+	socket.on("loggedOut", function(data){
+		getUsers();
+	});
+
 	$scope.isMe = function(userID){
 		if(userID == $rootScope.user.id){
 			return 'user'
@@ -98,14 +102,15 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		}
 	}
 
-	$http.get('users')
-		.success(function(data){
-			// console.log('users', data);
-			$scope.users = data.data;
-		})
-		.error(function(err){
-			console.log('Get Users', err);
-		});
+	function getUsers(){
+		$http.get('users')
+			.success(function(data){
+				$scope.users = data.data;
+			})
+			.error(function(err){
+				console.log('Get Users', err);
+			});
+	}	
 
 	socket.on("messageSent", function(data){
 		console.log('Messages associated ID:', data);
@@ -234,6 +239,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		$http.get('logout')
 			.success(function(){
 				console.log('logged out!');
+				socket.emit("logOut", $scope.user.id);
 				checkLogin();
 			})
 			.error(function(error){

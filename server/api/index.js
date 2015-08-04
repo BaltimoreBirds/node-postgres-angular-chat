@@ -39,6 +39,9 @@ io.on("connection", function(socket){
   });
   socket.on("createChat", function(data){
     io.emit("chatCreated", data);
+  });
+  socket.on("logOut", function(data){
+    io.emit("loggedOut", data);
   })
 });
 

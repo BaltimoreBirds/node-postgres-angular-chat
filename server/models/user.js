@@ -39,12 +39,10 @@ var User = Bookshelf.Model.extend({
           callback(err, null);
         });        
     }, 
-    deactivate: function(userID){
+    deactivate: function(userID, callback){
       User.forge({'id': userID}).fetch()
         .then(function(user){
           user.set({status: 'inactive'}).save();
-          // user.set({status: 'inactive'});
-          console.log(user);
         })
         .catch(function(err){
             callback(err, null);

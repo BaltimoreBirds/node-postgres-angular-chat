@@ -76,6 +76,12 @@
         left: 0;
         top:10%;
       }
+      #usersAccordion .user-wrap{
+        position: relative;
+        float: left;
+        display: inline;
+        width: 20%;
+      }
       #usersAccordion i.fa-circle.active{
         color: green;
       }
