@@ -83,8 +83,8 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	});
 
 	socket.on("loggedOut", function(data){
-		getUsers();
-		getChats();
+		//Update User models
+		updateUserStatus(data, 'inactive');
 	});
 
 	socket.on("messageSent", function(data){
@@ -98,9 +98,26 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	});
 
 	socket.on("loggedIn", function(data){
-		getUsers();
-		getChats();
+		//Update User models
+		updateUserStatus(data, 'active');
 	});
+
+	function updateUserStatus(data, status){
+		//updates $scope.chatUsers
+		angular.forEach($scope.chatUsers, function(chatUser, key){
+			angular.forEach(chatUser, function(user, key){
+				if(data == user.id){
+					user.status = status;
+				}
+			});
+		});
+		//Updates $scope.users
+		angular.forEach($scope.users, function(user, key){
+			if(data == user.id){
+				user.status = status;
+			}
+		});
+	}
 
 	$scope.isMe = function(userID){
 		if(userID == $rootScope.user.id){

@@ -41,6 +41,9 @@
         float: left;
         margin-right: 2%;
       }
+      .user-wrap{
+        height: 50px;
+      }
       .user-wrap li{
         list-style: none;
         padding-left: 10px;

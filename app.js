@@ -94,7 +94,7 @@ passport.use(new LocalStrategy(
         console.log('PASSWORD FAIL');
         return done(null, false, { message: 'Incorrect password.' });
       }
-      io.emit("loggedIn", user);
+      io.emit("loggedIn", user.id);
       user.set({status: 'active'}).save();
       return done(null, user);
     });
