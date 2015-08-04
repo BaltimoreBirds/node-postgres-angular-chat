@@ -35,7 +35,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 .controller('mainController', function($scope, $http, $rootScope, socket){
 
 	$rootScope.user = {};
-	$scope.users = ["mswanson", "garfield", "stripes"];
+	$scope.users = ["mswanson", "garfield", "stripes", "gaylord"];
 	$scope.actions = {};
 	$scope.actions['typing'] = {};
 	$rootScope.alert = {}
@@ -55,16 +55,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	//Check If user is logged in
 	checkLogin();
-	
-	//Get all todos with AJAX request to /api/v1/messages
-	// $http.get('messages')
-	// 	.success(function(data){
-	// 		$scope.messageData = data.data; 
-	// 		console.log('Data: ', data.data);
-	// 	})
-	// 	.error(function(error){
-	// 		console.log('Error ', error);
-	// 	});
 	
 	socket.on("typed", function(data){
 		var chatID = Object.keys(data.typing);
@@ -100,7 +90,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		}
 	}
 
-	// function getUsers(){
+	// $scope.users = function(){
 	// 	return $http.get('users')
 	// 		.success(function(data){
 	// 			var array = [];
