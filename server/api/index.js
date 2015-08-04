@@ -204,27 +204,10 @@ router.route('/chats')
         return;
       }
       var currentUser = req.session.passport.user;
+      var otherUser = user.id;
       console.log('Creating Chat...');
-      Chat.createChat(currentUser, user.id, function(err, chat){
-        // Refactor this block - - Identical block above
-        User.forge({'id': currentUser})
-          .fetch({
-            withRelated: ['chats']
-          }).then(function(user){
-            var chatCollection = user.related('chats');
-            chatCollection.fetch({
-              withRelated: ['messages']
-              }).then(function(collection){
-                res.json({error: err, data: {chats: collection}});
-              })
-              .catch(function(err){
-                res.status(500).json({error: true, data: {message: err.message}});
-              });
-          })
-          .catch(function(err){
-            res.status(500).json({error: true, data: {message: err.message}});
-          });
-          // Refactor this block - - Identical block above
+      Chat.createChat(currentUser, otherUser, function(err, chat){
+        res.end();
       });
 
     });

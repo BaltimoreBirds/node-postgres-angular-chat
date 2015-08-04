@@ -47,7 +47,7 @@ var User = Bookshelf.Model.extend({
         .catch(function(err){
             callback(err, null);
         });             
-        }
+    },
 });
 Bookshelf.model('User', User);
 
