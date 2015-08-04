@@ -42,7 +42,7 @@ io.on("connection", function(socket){
   });
   socket.on("logOut", function(data){
     io.emit("loggedOut", data);
-  })
+  });
 });
 
 router.route('/')

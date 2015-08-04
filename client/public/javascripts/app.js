@@ -83,7 +83,23 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	});
 
 	socket.on("loggedOut", function(data){
-		$scope.apply();
+		getUsers();
+		getChats();
+	});
+
+	socket.on("messageSent", function(data){
+		console.log('Messages associated ID:', data);
+		angular.forEach($scope.chatsData, function(chat, key){
+    	if(chat.id == data.chat_id){
+    		console.log('Chat object:', chat);
+    		chat.messages.push(data);
+    	}
+    });
+	});
+
+	socket.on("loggedIn", function(data){
+		getUsers();
+		getChats();
 	});
 
 	$scope.isMe = function(userID){
@@ -111,16 +127,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 				console.log('Get Users', err);
 			});
 	}	
-
-	socket.on("messageSent", function(data){
-		console.log('Messages associated ID:', data);
-		angular.forEach($scope.chatsData, function(chat, key){
-    	if(chat.id == data.chat_id){
-    		console.log('Chat object:', chat);
-    		chat.messages.push(data);
-    	}
-    });
-	});
 
 	function getChatUsers(chatID){
 		$http.get('chatUsers/' + chatID)
