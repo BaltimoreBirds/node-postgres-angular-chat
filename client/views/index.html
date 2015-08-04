@@ -48,8 +48,8 @@
         <label class="">&nbsp;Start a new chat</label>
         <input type="text" class="form-control input-sm" placeholder="Enter Username..." ng-model="chatCreateData.username">
         <button class="btn btn-primary btn-sm" ng-click="createChat()">New Chat</button>
-        <div id="usersAccordion" class="ul" ng-repeat="chat in chatsData" role="tablist" aria-multiselectable="true">
-          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="true" aria-controls="collapse{{chat.id}}"><strong>Find Users</strong></a>
+        <div id="usersAccordion" class="ul">
+          <a role="button" data-toggle="collapse" data-parent="#usersAccordion" href="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers"><strong>Find Users</strong></a>
           <div id="collapseUsers" class="panel-collapse collapse collapse-wrap">
             <div ng-repeat="user in users">
               <div class="user-wrap">
