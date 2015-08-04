@@ -83,7 +83,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	});
 
 	socket.on("loggedOut", function(data){
-		getUsers();
+		$scope.apply();
 	});
 
 	$scope.isMe = function(userID){

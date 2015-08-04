@@ -5,6 +5,11 @@
       a {
         color: #337ab7;
         line-height: 30px;
+        text-decoration: none;
+      }
+      a:hover, a:focus, a:visited{
+        text-decoration: none;
+        color: #337ab7;
       }
       div.ul {
         list-style-type: none;
@@ -82,11 +87,13 @@
         display: inline;
         width: 20%;
       }
-      #usersAccordion i.fa-circle.active{
-        color: green;
+      i.fa-circle.active{
+        color: green !important;
+        text-decoration: none;
       }
-      #usersAccordion i.fa-genderless.red{
-        color: red;
+      i.fa-circle.inactive{
+        color: rgb(194, 18, 18);
+        text-decoration: none;
       }
       .messagesBox{
         border: 1px solid black; margin: 5px;
