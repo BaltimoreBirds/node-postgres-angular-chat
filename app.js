@@ -11,8 +11,9 @@ var flash         = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var User          = require('./server/models/user');
 var app           = express();
+app.set('port', process.env.PORT || 3000);
 var http          = require('http');
-var server        = http.createServer(app).listen(app.get('port'), function(){});
+var server        = http.createServer(app).listen(app.get('port'));
 var io            = require('socket.io')(server);
 
 module.exports.sio = io;
@@ -94,7 +95,7 @@ passport.use(new LocalStrategy(
         console.log('PASSWORD FAIL');
         return done(null, false, { message: 'Incorrect password.' });
       }
-      io.emit("loggedIn", user.id);
+      io.emit("loggedIn", user);
       user.set({status: 'active'}).save();
       return done(null, user);
     });
