@@ -11,6 +11,21 @@
         text-decoration: none;
         color: #337ab7;
       }
+      a span.username{
+        background-color: #337ab7;
+        color: white;
+        border-radius: 3px;
+        padding: 2px 5px 3px;
+      }
+      a#myBrand{
+        color: black;
+      }
+      .chatTitle{
+        padding-top:5px;
+      }
+      .chatTitle p{
+        margin-bottom: 5px;
+      }
       div.ul {
         list-style-type: none;
         padding-left: 0px;

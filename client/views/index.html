@@ -30,7 +30,7 @@
     <div class="container">
       
       <div class="header">
-        <h1 style="text-align: left;">ExpressChat</h1>
+        <a id="myBrand" href="#"><h1 style="text-align: left;"><i style="font-size: 40px;" class="fa fa-fire"></i>ExpressChat</h1></a>
         <!-- </br> -->
         <p ng-show="user.status"><button type="submit" class="btn btn-primary btn-sm" style="display: inline;" ng-click="logOut()">Log Out</button>&nbsp;&nbsp;{{user.username}}</p><div class="spacer"></div>
         <!-- <div
@@ -63,7 +63,7 @@
       <div class="chat-wrap" ng-show="user.status" >
         <div id="accordion" class="ul" ng-repeat="chat in chatsData" role="tablist" aria-multiselectable="true">
           <div class="chatTitle" ng-click="hideAlert(chat.id)">
-            <p>&nbsp;  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{chat.id}}" aria-expanded="true" aria-controls="collapse{{chat.id}}"><span ng-hide="user.username == chatUsers[chat.id][0].username"><i ng-class="active(chatUsers[chat.id][0].status)" class="fa fa-circle"></i> <strong>{{chatUsers[chat.id][0].username}}</strong></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><i ng-class="active(chatUsers[chat.id][1].status)" class="fa fa-circle"></i> <strong>{{chatUsers[chat.id][1].username}}</strong></span></a><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i>&nbsp;<i class="msgAlert{{chat.id}} hide fa fa-bolt"></i></p>
+            <p>&nbsp;  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{chat.id}}" aria-expanded="true" aria-controls="collapse{{chat.id}}"><span ng-hide="user.username == chatUsers[chat.id][0].username"><i ng-class="active(chatUsers[chat.id][0].status)" class="fa fa-circle"></i> <span class="username">{{chatUsers[chat.id][0].username}}</span></span><span ng-hide="user.username == chatUsers[chat.id][1].username"><i ng-class="active(chatUsers[chat.id][1].status)" class="fa fa-circle"></i> <span class="username">{{chatUsers[chat.id][1].username}}</span></span></a><i ng-show="actions['typing'][chat.id]" style="font-size: 11px;">(typing)<span id="typing" ></span></i>&nbsp;<i class="msgAlert{{chat.id}} hide fa fa-exclamation"></i></p>
           </div>
           <div id="collapse{{chat.id}}" ng-click="hideAlert(chat.id)" ng-mouseover="hideAlert(chat.id)"  class="panel-collapse collapse collapse-wrap" role="tabpanel">
             <div class="messagesBox" scroll-glue >

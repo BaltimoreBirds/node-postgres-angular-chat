@@ -38,6 +38,7 @@ io.on("connection", function(socket){
     io.emit("messageDeleted", data);
   });
   socket.on("createChat", function(data){
+    console.log("chat:", data);
     io.emit("chatCreated", data);
   });
   socket.on("logOut", function(data){
@@ -207,7 +208,15 @@ router.route('/chats')
       var otherUser = user.id;
       console.log('Creating Chat...');
       Chat.createChat(currentUser, otherUser, function(err, chat){
-        res.end();
+        console.log("~~~~~~~~~~~~~~~~~~~",chat);
+        chat.fetch({
+          withRelated: ['messages']
+        }).then(function(chat){
+          res.json({error: false, data: {chat: chat}});
+        })
+        .catch(function(err){
+          res.json({error: false, data: {message: err.message}});
+        });
       });
 
     });
