@@ -1,4 +1,18 @@
-var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.bootstrap'])
+var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.bootstrap', 'angular-flash.service', 'angular-flash.flash-alert-directive'])
+.config(function (flashProvider) {
+
+            // Support bootstrap 3.0 "alert-danger" class with error flash types
+            flashProvider.errorClassnames.push('alert-danger');
+
+            /**
+             * Also have...
+             *
+             * flashProvider.warnClassnames
+             * flashProvider.infoClassnames
+             * flashProvider.successClassnames
+             */
+
+        })
 .factory('socket', ['$rootScope', function ($rootScope) {
     var socket = io.connect();
  
