@@ -207,8 +207,13 @@ router.route('/chats')
       var currentUser = req.session.passport.user;
       var otherUser = user.id;
       console.log('Creating Chat...');
+
+      
+
+
+
       Chat.createChat(currentUser, otherUser, function(err, chat){
-        console.log("~~~~~~~~~~~~~~~~~~~",chat);
+        //return chat object with messages relation
         chat.fetch({
           withRelated: ['messages']
         }).then(function(chat){
@@ -218,6 +223,8 @@ router.route('/chats')
           res.json({error: false, data: {message: err.message}});
         });
       });
+
+
 
     });
   });

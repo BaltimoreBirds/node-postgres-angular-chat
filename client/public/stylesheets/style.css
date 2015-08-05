@@ -34,7 +34,7 @@
         max-width: 800px;
         /*background-color: #eeeeee;*/
         border: 1px solid black;
-        border-radius: 6px;
+        border-radius: 5px;
       }
       .header {
         text-align: center;
@@ -87,14 +87,14 @@
       }
       div#accordion{
         background-color: rgba(111, 111, 111, .05);
-        border-radius: 6px;
+        border-radius: 5px;
         border: 1px solid black;
       }
       #chatCreateForm{
         padding-top: 8px;
         max-width: 800px; 
         border: 1px solid black;
-        border-radius: 6px;
+        border-radius: 5px;
         position: relative;
       }
       #chatCreateForm label{
@@ -137,7 +137,7 @@
         height: 300px;
         overflow: scroll;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: 5px;
       }
       .messagesBox div.ul{
         background-color: white;
@@ -196,7 +196,7 @@
           padding-top: 8px;
           max-width: 800px; 
           border: 1px solid black;
-          border-radius: 6px;
+          border-radius: 5px;
           position: relative;
           display: block;
         }
