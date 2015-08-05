@@ -58,34 +58,40 @@ var User = Bookshelf.Model.extend({
           console.log("FOR EACH CHAT:",chat.id);
           myChats.push(chat.id);
         });
-        User.forge({'id': otherUser}).fetch({
-          withRelated: ['chats']
-        }).then(function(user){
-          var otherUsersChats = user.related('chats');
-          var theirChats = [];          
-          otherUsersChats.forEach(function(chat, key){
-            if(myChats.indexOf(chat.id) >= 0){
-              //chat with this dude exists
-              console.log('EXISTS');
-              var exists = true;
-              callback(null, 'true');
-              exit(0);
+        console.log("~~~~~~~ 1 ~~~~~~~~~");
+        console.log("LENGTH", myChats.length);
+        if(myChats.length > 0){
+          console.log("~~~~~~~ 2 ~~~~~~~~~");
+          User.forge({'id': otherUser}).fetch({
+            withRelated: ['chats']
+          }).then(function(user){            
+            var otherUsersChats = user.related('chats');
+            var theirChats = []; 
+            console.log("~~~~~~~ 3 ~~~~~~~~~");
+            console.log("LENGTH", otherUsersChats.length);
+            if(otherUsersChats.length > 0){    
+              console.log("~~~~~~~ 4 ~~~~~~~~~");     
+              otherUsersChats.forEach(function(chat, key){
+                console.log("~~~~~~~ 5 ~~~~~~~~~");
+                if(myChats.indexOf(chat.id) >= 0){
+                  //chat with this dude exists
+                  console.log('EXISTS');
+                  return( callback(null, 'true') );
+                }
+              });
             }else{
-              var exists = false;
+              callback(null, 'false');
             }
+          })  
+          .catch(function(err){
+            return( callback(err, null) );
           });
-          if(!exists){
-            //chat with this dude does not exist
-            console.log('DOES NOT EXIST');
-            callback(false, 'false');    
-          }
-        })  
-        .catch(function(err){
-
-        });
+        }else{
+          return( callback(null, 'false') );
+        }
       })
       .catch(function(err){
-        return err;
+        return( callback(err, null) );
       })
     }
 });

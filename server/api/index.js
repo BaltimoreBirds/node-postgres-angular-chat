@@ -210,8 +210,11 @@ router.route('/chats')
 
       User.doesChatExist(currentUser, otherUser, function(err, existince){
         console.log('Existince: ', existince);
+        console.log("~~~~~~~ 6 ~~~~~~~~~");
         if( existince == 'false'){
+          console.log("~~~~~~~ 7 ~~~~~~~~~");
           Chat.createChat(currentUser, otherUser, function(err, chat){
+            console.log("~~~~~~~ 8 ~~~~~~~~~");
             //return chat object with messages relation
             chat.fetch({
               withRelated: ['messages']
@@ -223,6 +226,8 @@ router.route('/chats')
             });
           });
         }else{
+          console.log('dude you\'re fucking up');
+          // res.end();
           res.json({error: false, data: {chat: null}});
         }
       })      

@@ -221,18 +221,23 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	//Create a new Chat
 	$scope.createChat = function(userID) {
-		$http.post('chats', $scope.chatCreateData)
-			.success(function(data){
-				if(data.data.chat){
-					socket.emit("createChat", data);
-					$scope.chatCreateData.username = null;
-				}else{
-					alert('This Chat already exists bozo');
-				}				
-			})
-			.error(function(error){
-				console.log('Chat Create Error');
-			});
+		if($scope.chatCreateData.username != $scope.user.username){
+			$http.post('chats', $scope.chatCreateData)
+				.success(function(data){
+					if(data.data.chat){
+						socket.emit("createChat", data);
+						$scope.chatCreateData.username = null;
+					}else{
+						alert('You\'re already chatting with that person, bozo');
+					}				
+				})
+				.error(function(error){
+					console.log('Chat Create Error');
+				});
+		}else{
+			alert('Think harder, bozo');
+		}
+		
 	}
 
 	$scope.createMessage = function(chatID, msg) {
