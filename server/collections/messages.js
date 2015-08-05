@@ -1,5 +1,5 @@
 var Bookshelf = require('../models/bookshelf');
-var Message = require('../models/Message');
+var Message = require('../models/message');
 
 var Messages = Bookshelf.Collection.extend({
 
