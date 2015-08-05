@@ -12,7 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User          = require('./server/models/user');
 var app           = express();
 var http          = require('http');
-var server        = http.createServer(app).listen(app.get('port'), function(){}));
+var server        = http.createServer(app).listen(app.get('port'), function(){});
 var io            = require('socket.io')(server);
 
 module.exports.sio = io;
