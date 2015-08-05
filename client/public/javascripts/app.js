@@ -14,7 +14,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
         })
 .factory('socket', ['$rootScope', function ($rootScope) {
-    var socket = io.connect();
+    var socket = io.connect('http://desolate-brook-8350.herokuapp.com/');
  
     return {
         on: function (eventName, callback) {
