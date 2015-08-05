@@ -38,7 +38,7 @@ io.on("connection", function(socket){
     io.emit("messageDeleted", data);
   });
   socket.on("createChat", function(data){
-    console.log("chat:", data);
+    // console.log("chat:", data);
     io.emit("chatCreated", data);
   });
   socket.on("logOut", function(data){
@@ -200,7 +200,7 @@ router.route('/chats')
   .post(function(req, res){
     User.getByUsername(req.body.username, function(err, user){
       if(err != null){
-        console.log('ERROR NOT NULL');
+        console.log('ERROR NOT NULL', err.message);
         res.status(404).json({error: true, data: {message: err.message}});
         return;
       }
@@ -208,22 +208,24 @@ router.route('/chats')
       var otherUser = user.id;
       console.log('Creating Chat...');
 
-      
-
-
-
-      Chat.createChat(currentUser, otherUser, function(err, chat){
-        //return chat object with messages relation
-        chat.fetch({
-          withRelated: ['messages']
-        }).then(function(chat){
-          res.json({error: false, data: {chat: chat}});
-        })
-        .catch(function(err){
-          res.json({error: false, data: {message: err.message}});
-        });
-      });
-
+      User.doesChatExist(currentUser, otherUser, function(err, existince){
+        console.log('Existince: ', existince);
+        if( existince == 'false'){
+          Chat.createChat(currentUser, otherUser, function(err, chat){
+            //return chat object with messages relation
+            chat.fetch({
+              withRelated: ['messages']
+            }).then(function(chat){
+              res.json({error: false, data: {chat: chat}});
+            })
+            .catch(function(err){
+              res.json({error: false, data: {message: err.message}});
+            });
+          });
+        }else{
+          res.json({error: false, data: {chat: null}});
+        }
+      })      
 
 
     });

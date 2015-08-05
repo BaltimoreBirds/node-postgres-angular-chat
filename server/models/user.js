@@ -24,8 +24,7 @@ var User = Bookshelf.Model.extend({
         }else{
             return false;
         }
-    },
-
+    },    
     
 }, {
     getByUsername: function(username, callback){
@@ -48,6 +47,47 @@ var User = Bookshelf.Model.extend({
             callback(err, null);
         });             
     },
+    doesChatExist: function(currentUser, otherUser, callback){
+      User.forge({'id': currentUser}).fetch({
+        withRelated: ['chats']
+      }).then(function(user){
+        var currentUsersChats = user.related('chats');
+        // console.log("usersChats", currentUsersChats);
+        var myChats = [];
+        currentUsersChats.forEach(function(chat, key){
+          console.log("FOR EACH CHAT:",chat.id);
+          myChats.push(chat.id);
+        });
+        User.forge({'id': otherUser}).fetch({
+          withRelated: ['chats']
+        }).then(function(user){
+          var otherUsersChats = user.related('chats');
+          var theirChats = [];          
+          otherUsersChats.forEach(function(chat, key){
+            if(myChats.indexOf(chat.id) >= 0){
+              //chat with this dude exists
+              console.log('EXISTS');
+              var exists = true;
+              callback(null, 'true');
+              exit(0);
+            }else{
+              var exists = false;
+            }
+          });
+          if(!exists){
+            //chat with this dude does not exist
+            console.log('DOES NOT EXIST');
+            callback(false, 'false');    
+          }
+        })  
+        .catch(function(err){
+
+        });
+      })
+      .catch(function(err){
+        return err;
+      })
+    }
 });
 Bookshelf.model('User', User);
 

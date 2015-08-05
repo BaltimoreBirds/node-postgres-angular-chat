@@ -1,7 +1,6 @@
 var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.bootstrap'])
 .factory('socket', ['$rootScope', function ($rootScope) {
     var socket = io.connect();
-    console.log("socket created");
  
     return {
         on: function (eventName, callback) {
@@ -21,7 +20,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
  
         emit: function (eventName, data, callback) {
             socket.emit(eventName, data, function () {
-            	console.log('----EMITTING----');
                 var args = arguments;
                 $rootScope.$apply(function () {
                     if(callback) {
@@ -63,8 +61,10 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	socket.on("chatCreated", function(data){
 		// getChats();
-		$scope.chatsData.push(data.data.chat);
-		getChatUsers(data.data.chat.id);
+		if(data.data.chat){
+			$scope.chatsData.push(data.data.chat);
+			getChatUsers(data.data.chat.id);
+		}
 	})
 
 	socket.on("messageDeleted", function(data){
@@ -90,14 +90,12 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	});
 
 	socket.on("messageSent", function(data){
-		console.log('Messages associated ID:', data);
 		angular.forEach($scope.chatsData, function(chat, key){
     	if(chat.id == data.message.chat_id){
     		//Add notification
     		if($scope.user.id != data.user){
     			$('i.msgAlert'+chat.id+'.fa-exclamation').removeClass('hide');
     		}	    		
-    		console.log('Chat object:', chat);
     		chat.messages.push(data.message);
     	}
     });
@@ -151,7 +149,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 				$scope.users = data.data;
 			})
 			.error(function(err){
-				console.log('Get Users', err);
+				console.log('Get Users Error', err);
 			});
 	}	
 
@@ -159,7 +157,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		$http.get('chatUsers/' + chatID)
 			.success(function(data){
 				$scope.chatUsers[data.data.id] = data.data.users;
-				console.log('Chat Users', $scope.chatUsers);
 			})
 			.error(function(err){
 				console.log('Other Users Retrieval Error', err);
@@ -170,7 +167,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		$http.get('users/' + userID)
 			.success(function(data){
 				$rootScope.user.username = data.data.username;
-				console.log(data);
 			})
 			.error(function(err){
 				console.log('User Retrieval Error:', err);
@@ -199,7 +195,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	function getChats(){
 		$http.get('chats')
 			.success(function(data){
-				console.log('Chats Data:', data.data);
 				$scope.chatsData = data.data.chats;
 				angular.forEach(data.data.chats, function(chat, key){
 					getChatUsers(chat.id);
@@ -214,13 +209,15 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	$scope.createChat = function(userID) {
 		$http.post('chats', $scope.chatCreateData)
 			.success(function(data){
-				console.log("NEW CHAT MADE:", data);
-				socket.emit("createChat", data);
-				// $scope.chatsData = data.data.chats;
+				if(data.data.chat){
+					socket.emit("createChat", data);
 					$scope.chatCreateData.username = null;
+				}else{
+					alert('This Chat already exists bozo');
+				}				
 			})
 			.error(function(error){
-				console.log('Create Chat ERROR', error);
+				console.log('Chat Create Error');
 			});
 	}
 
@@ -247,7 +244,6 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	    	$scope.deletedMessage.chatID = chatID;
 	    	socket.emit("messageDelete", $scope.deletedMessage);
         $scope.messageData = data.data.collection;
-        console.log('Deleted data', data.data.collection);
 	    })
 	    .error(function(data) {
         console.log('Error: ',  data);
@@ -256,11 +252,9 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	//Create a user
 	$scope.createUser = function(userID) {
-		// console.log($scope.userData);
 		$http.post('users', $scope.userData)
 		.success(function(data){
 			$scope.userData	= data;
-			console.log(data);
 		})
 		.error(function(error){
 			//!!!!!!!!!!!HOLY SHIP PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
