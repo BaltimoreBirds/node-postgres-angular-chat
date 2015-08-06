@@ -5,7 +5,8 @@ var knex = require('knex')({
         user     : 'tpqopthjjzjbip',
         password : 'cjcg3Kpfc-KVwNOwKgZu5j2k6l',
         database : 'ddb75r044ashp4',
-        charset  : 'utf8'
+        charset  : 'utf8',
+        ssl		 : true
   }
 });
 var Bookshelf = require('bookshelf')(knex);
