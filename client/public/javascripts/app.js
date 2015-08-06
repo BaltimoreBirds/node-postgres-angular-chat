@@ -75,7 +75,8 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 
 	socket.on("chatCreated", function(data){
 		// getChats();
-		if(data.data.chat){
+		console.log(data);
+		if(data.data.chat && ( ($scope.user.id == data.data.user1) || ($scope.user.id == data.data.user2) ) ){
 			$scope.chatsData.push(data.data.chat);
 			getChatUsers(data.data.chat.id);
 		}
@@ -247,6 +248,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		$scope.newMessageData.chatID = chatID;
 		$http.post('messages', $scope.newMessageData)
 	    .success(function(data) {
+	    	console.log('CHAT DATA: ', data);
         //clear input values
         $scope.newMessageData[data.data.message.chat_id].text = null;
 	    })

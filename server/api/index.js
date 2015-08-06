@@ -225,7 +225,7 @@ router.route('/chats')
             chat.fetch({
               withRelated: ['messages']
             }).then(function(chat){
-              res.json({error: false, data: {chat: chat}});
+              res.json({error: false, data: {chat: chat, user1: currentUser, user2: otherUser}});
             })
             .catch(function(err){
               res.json({error: false, data: {message: err.message}});
@@ -234,7 +234,7 @@ router.route('/chats')
         }else{
           console.log('dude you\'re fucking up');
           // res.end();
-          res.json({error: false, data: {chat: null}});
+          res.json({error: false, data: {chat: null, user1: null, user2: null}});
         }
       })      
 
