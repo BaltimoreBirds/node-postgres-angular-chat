@@ -86,11 +86,13 @@ var User = Bookshelf.Model.extend({
               otherUsersChats.forEach(function(chat, key){
                 console.log("~~~~~~~ 5 ~~~~~~~~~");
                 if(myChats.indexOf(chat.id) >= 0){
+                  console.log("~~~~~~~ 5.5 ~~~~~~~~~");
                   //chat with this dude exists
                   console.log('EXISTS');
                   return( callback(null, 'true') );
                 }
               });
+              return( callback(null, 'false') );
             }else{
               callback(null, 'false');
             }
