@@ -189,6 +189,25 @@
           text-align: left; 
           display: block;
         }
+        .deleteBox{
+          clear: both;
+          color: #cccccc;
+          display: inline-block;
+          float: right;
+          font-size: 9px;
+          font-style: italic;
+          font-weight: 100;
+          margin-bottom: 6px;
+          margin-top: 0;
+          text-align: right;
+          text-transform: lowercase;
+        }
+        .deleteBox:after{
+          clear: both;
+          display: block;
+          content: "!";
+          color: transparent;
+        }
         .header div.spacer{
           height: 0px;
         }
