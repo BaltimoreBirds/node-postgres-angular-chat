@@ -1,3 +1,3 @@
 # node-postgres-angular-chat
 
-Live Example : express--chat.herokuapp.com
+Live Example : http://express--chat.herokuapp.com
