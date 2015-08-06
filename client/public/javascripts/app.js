@@ -273,8 +273,12 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 	$scope.createUser = function(userID) {
 		$http.post('users', $scope.userData)
 		.success(function(data){
-			$scope.userData	= data;
-			alert('Welcome to ExpressChat! Please login');
+			if(data.data.id){
+				$scope.userData	= data;
+				alert('Welcome to ExpressChat! Please login');
+			}else{
+				alert('That username already exists, please login or try another');
+			}
 		})
 		.error(function(error){
 			//!!!!!!!!!!!HOLY SHIP PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!

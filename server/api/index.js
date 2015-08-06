@@ -68,20 +68,26 @@ router.route('/users')
   //create a user
   .post(function(req, res){
     console.log('USER creating', req.body);
-    User.forge({
-      provider: req.body.provider,
-      username: req.body.username,
-            password: req.body.password,
-            status: 'active',
-            last_login: new Date(),
-    })
-    .save()
-    .then(function(user){
-      res.json({error: false, data: {id: user.get('id')}});
-    })
-    .catch(function(err){
-      res.status(500).json({error: true, data: {message: err.message}});
-    })
+    User.doesUserExist(req.body.username, function(err, existince){
+      if(existince){
+        User.forge({
+          provider: req.body.provider,
+          username: req.body.username,
+                password: req.body.password,
+                status: 'active',
+                last_login: new Date(),
+        })
+        .save()
+        .then(function(user){
+          res.json({error: false, data: {id: user.get('id')}});
+        })
+        .catch(function(err){
+          res.status(500).json({error: true, data: {message: err.message}});
+        });
+      }else{
+        res.json({error: false, data: {id: null}});
+      }
+    });
   });
 
 router.route('/users/:id')

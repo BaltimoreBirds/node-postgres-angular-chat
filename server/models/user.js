@@ -47,6 +47,18 @@ var User = Bookshelf.Model.extend({
             callback(err, null);
         });             
     },
+    doesUserExist: function(username, callback){
+      User.forge({'username': username}).fetch()
+      .then(function(user){
+        if(user == null){
+          console.log("doesnt exists");
+          return( callback(null, true) );
+        }else{
+          console.log("exist");
+          return( callback(null, false) );
+        }
+      });
+    },
     doesChatExist: function(currentUser, otherUser, callback){
       User.forge({'id': currentUser}).fetch({
         withRelated: ['chats']
