@@ -274,6 +274,7 @@ var chatApp = angular.module('nodeChat',['luegg.directives', 'ui.tree', 'ui.boot
 		$http.post('users', $scope.userData)
 		.success(function(data){
 			$scope.userData	= data;
+			alert('Welcome to ExpressChat! Please login');
 		})
 		.error(function(error){
 			//!!!!!!!!!!!HOLY SHIP PROPER DISPLAY OF [OBJECT][OBJECT]!!!!!!!!!YOU IDIOT!!!!!!!
