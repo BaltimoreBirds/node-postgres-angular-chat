@@ -1,5 +1,5 @@
       body {
-        padding: 50px;
+        padding: 8px;
         font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
       }
       a {
@@ -67,7 +67,6 @@
       .loginForm{
         width: 47%;
         float: left;
-        margin-left: 2%;
       }
       #signup_form{
         width: 47%;
@@ -224,7 +223,7 @@
        .loginForm{
           width: 100%;
           float: left;
-          margin-left: 2%;
+          margin-left: 0%;
         }
         #signup_form{
           width: 100%;
